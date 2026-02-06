@@ -29,7 +29,7 @@ Outil d'aide à la présentation : (Optionnel) Fiches techniques des formations.
 🛠️ Fonctionnalités Futures / Idées
 [ ] Génération de QR Code pour un accès rapide au questionnaire.
 
-[ ] Tableau de bord administrateur avec présentation des donnée (CSV/Excel). Et possibilité d'appeler un étudiant quand un visiteur arrive.
+[ ] Tableau de bord administrateur avec présentation des donnée. Et possibilité d'appeler un étudiant quand un visiteur arrive.
 
 💻 Stack Technique
 Frontend : [React]
