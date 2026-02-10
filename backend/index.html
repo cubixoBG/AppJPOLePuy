@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker - Containerisation d'Applications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .docker-logo {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        main {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+        }
+
+        .intro h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            padding: 30px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-icon {
+            font-size: 2em;
+        }
+
+        .benefits {
+            margin: 50px 0;
+        }
+
+        .benefits h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .benefit-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .benefit-item {
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            background: #e9ecef;
+        }
+
+        .benefit-item h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+
+        .use-cases {
+            margin: 50px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .use-cases h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .use-cases ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .use-cases li {
+            padding: 15px 15px 15px 45px;
+            position: relative;
+        }
+
+        .use-cases li:before {
+            content: "✓";
+            position: absolute;
+            left: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .cta {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="docker-logo">🐳</div>
+            <h1>Docker</h1>
+            <p>La plateforme de containerisation qui révolutionne le développement</p>
+        </header>
+
+        <main>
+            <div class="intro">
+                <h2>Qu'est-ce que Docker ?</h2>
+                <p>Docker est une plateforme open-source qui permet de développer, déployer et exécuter des applications
+                    dans des conteneurs isolés. Ces conteneurs empaquetent une application avec toutes ses dépendances,
+                    garantissant qu'elle fonctionnera de manière identique sur n'importe quel environnement.</p>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <h3><span class="feature-icon">📦</span> Portabilité</h3>
+                    <p>Créez une fois, déployez partout. Vos conteneurs fonctionnent de manière identique sur votre
+                        machine locale, en staging ou en production.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3><span class="feature-icon">⚡</span> Légèreté</h3>
+                    <p>Les conteneurs partagent le noyau du système hôte, les rendant beaucoup plus légers et rapides
+                        que les machines virtuelles traditionnelles.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3><span class="feature-icon">🔒</span> Isolation</h3>
+                    <p>Chaque conteneur est isolé, garantissant que les applications n'interfèrent pas les unes avec les
+                        autres et améliorant la sécurité.</p>
+                </div>
+            </div>
+
+            <div class="benefits">
+                <h2>Les Avantages de Docker</h2>
+                <div class="benefit-list">
+                    <div class="benefit-item">
+                        <h4>🚀 Déploiement rapide</h4>
+                        <p>Déployez vos applications en quelques secondes au lieu de plusieurs minutes.</p>
+                    </div>
+
+                    <div class="benefit-item">
+                        <h4>💰 Économies de ressources</h4>
+                        <p>Exécutez plus d'applications sur le même matériel grâce à l'efficacité des conteneurs.</p>
+                    </div>
+
+                    <div class="benefit-item">
+                        <h4>🔄 Versionnage simplifié</h4>
+                        <p>Gérez facilement différentes versions de vos applications avec les images Docker.</p>
+                    </div>
+
+                    <div class="benefit-item">
+                        <h4>🤝 Collaboration améliorée</h4>
+                        <p>Partagez des environnements identiques entre développeurs, testeurs et production.</p>
+                    </div>
+
+                    <div class="benefit-item">
+                        <h4>📈 Scalabilité</h4>
+                        <p>Augmentez ou réduisez facilement le nombre d'instances de vos applications.</p>
+                    </div>
+
+                    <div class="benefit-item">
+                        <h4>🛠️ CI/CD optimisé</h4>
+                        <p>Intégrez Docker dans vos pipelines d'intégration et de déploiement continus.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h2>Cas d'Utilisation</h2>
+                <ul>
+                    <li>Microservices et architecture distribuée</li>
+                    <li>Environnements de développement uniformes</li>
+                    <li>Applications web et APIs</li>
+                    <li>Automatisation des tests</li>
+                    <li>Migration vers le cloud</li>
+                    <li>DevOps et intégration continue</li>
+                </ul>
+            </div>
+
+            <div class="cta">
+                <h2>Prêt à commencer avec Docker ?</h2>
+                <p style="margin-bottom: 30px;">Téléchargez Docker et commencez à containeriser vos applications dès
+                    aujourd'hui !</p>
+                <a href="https://www.docker.com/get-started" class="cta-button" target="_blank">Télécharger Docker</a>
+                <a href="https://docs.docker.com/" class="cta-button" target="_blank">Documentation</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>🐳 Docker - Containerisation simplifiée | © 2026</p>
+        </footer>
+    </div>
+</body>
+
+</html>

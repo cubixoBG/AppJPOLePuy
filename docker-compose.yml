@@ -1,0 +1,72 @@
+name: ${PROJECT}
+
+services:
+  webserver:
+    container_name: ${PROJECT}-webserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PROJECT=${PROJECT}
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+    env_file:
+      - .env
+    depends_on:
+      - db
+  client:
+    image: node:20-alpine
+    container_name: ${PROJECT}-client
+    working_dir: /app/frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app/frontend:cached
+      - /app/frontend/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+    command: sh -c "npm install && npm run dev"
+
+  db:
+    container_name: ${PROJECT}-mysql
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    command: --innodb-use-native-aio=0
+
+  phpmyadmin:
+    container_name: ${PROJECT}-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - "8000:80"
+    environment:
+      - PMA_HOST=${MYSQL_HOST}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PMA_USER=${MYSQL_USER}
+      - PMA_PASSWORD=${MYSQL_PASSWORD}
+      - PMA_ARBITRARY=1
+      - UPLOAD_LIMIT=300M
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ${PROJECT}-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  db-data:
