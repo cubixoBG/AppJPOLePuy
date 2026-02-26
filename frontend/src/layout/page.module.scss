@@ -1,0 +1,47 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.header {
+    height: 80px;
+    width: 100%;
+    background-color: variables.$primary;
+    @include mixins.flexcenter;
+    justify-content: space-between;
+    padding: 0 5%;
+
+    .logoHeader {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+        }
+    }
+
+    .navHeader {
+
+        ul {
+            display: flex;
+            list-style: none;
+            gap: 4em;
+
+            li {
+                height: 100%;
+                width: 100px;
+
+                a {
+                    border: solid rgba($color: variables.$white, $alpha: 0.3) 3px;
+                    border-radius: 16px;
+                    padding: 10% 20%;
+
+                    &-hover {
+                        border: solid rgba($color: variables.$white, $alpha: 1.0) 3px;
+                    }
+                }
+            }
+        }
+    }
+}
