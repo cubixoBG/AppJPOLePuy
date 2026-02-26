@@ -24,7 +24,6 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app/frontend:cached
-      - /app/frontend/node_modules
     environment:
       - WATCHPACK_POLLING=true
       - NEXT_PUBLIC_API_URL=http://localhost:8080
