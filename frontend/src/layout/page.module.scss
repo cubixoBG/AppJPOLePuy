@@ -7,7 +7,7 @@
     background-color: variables.$primary;
     @include mixins.flexcenter;
     justify-content: space-between;
-    padding: 0 5%;
+    padding: 0 12%;
 
     .logoHeader {
         height: 100%;
@@ -18,6 +18,12 @@
             height: 60px;
             width: auto;
             object-fit: contain;
+            transition: all 0.3s;
+
+            &:hover {
+                margin-left: 2%;
+                transition: all 0.3s;
+            }
         }
     }
 
@@ -36,9 +42,11 @@
                     border: solid rgba($color: variables.$white, $alpha: 0.3) 3px;
                     border-radius: 16px;
                     padding: 10% 20%;
+                    transition: all 0.3s;
 
-                    &-hover {
+                    &:hover {
                         border: solid rgba($color: variables.$white, $alpha: 1.0) 3px;
+                        transition: all 0.3s;
                     }
                 }
             }
