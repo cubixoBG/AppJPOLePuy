@@ -20,10 +20,10 @@ export default function Header({type = 1}) {
 
     return (
         <header className={styles.header}>
-            <div className={styles.logoHeader}>
+            <div className={styles.header_Logo}>
                 <a href="#"><img src="/logoLongUCA.webp" alt="Université Clermont Auvergne"/></a>
             </div>
-            <nav className={styles.navHeader}>
+            <nav className={styles.header_Nav}>
                 {navContent}
             </nav>
         </header>

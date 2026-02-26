@@ -1,0 +1,8 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.accueil {
+    height: 92vh;
+    background-color: variables.$primary;
+
+}

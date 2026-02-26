@@ -2,14 +2,17 @@
 @use "@styles/mixins";
 
 .header {
-    height: 80px;
+    z-index: 1000;
+    position: relative;
+    height: 8vh;
     width: 100%;
     background-color: variables.$primary;
     @include mixins.flexcenter;
     justify-content: space-between;
     padding: 0 12%;
+    box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.2);
 
-    .logoHeader {
+    &_Logo {
         height: 100%;
         display: flex;
         align-items: center;
@@ -27,7 +30,7 @@
         }
     }
 
-    .navHeader {
+    &_Nav {
 
         ul {
             display: flex;
