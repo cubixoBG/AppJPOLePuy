@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -48,6 +50,17 @@ class User
 
     #[ORM\ManyToOne(inversedBy: 'id_user')]
     private ?Journee $id_journee = null;
+
+    /**
+     * @var Collection<int, Notification>
+     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'id_user', orphanRemoval: true)]
+    private Collection $notifications;
+
+    public function __construct()
+    {
+        $this->notifications = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -182,6 +195,36 @@ class User
     public function setIdJournee(?Journee $id_journee): static
     {
         $this->id_journee = $id_journee;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotifications(Notification $notifications): static
+    {
+        if (!$this->notifications->contains($notifications)) {
+            $this->notifications->add($notifications);
+            $notifications->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotifications(Notification $notifications): static
+    {
+        if ($this->notifications->removeElement($notifications)) {
+            // set the owning side to null (unless already changed)
+            if ($notifications->getIdUser() === $this) {
+                $notifications->setIdUser(null);
+            }
+        }
 
         return $this;
     }
