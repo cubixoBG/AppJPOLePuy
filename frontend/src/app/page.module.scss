@@ -3,6 +3,47 @@
 
 .accueil {
     height: 92vh;
-    background-color: variables.$primary;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
 
+    &_Top {
+        height: 92vh;
+        background: linear-gradient(160deg, variables.$primary 40%, #00A39E);
+        scroll-snap-align: start;
+        @include mixins.flexcenter;
+
+        img {
+            width: 75px;
+            padding: 1%;
+            background-color: rgba($color: variables.$tertiary, $alpha: 0.2);
+            border-radius: 21px;
+            margin: 0 0 4% 0;
+        }
+
+        &_text {
+            text-align: center;
+            width: 40%;
+
+            h1 {
+                font-size: 4.6em;
+                font-weight: 800;
+
+                span {
+                    color: variables.$tertiary;
+                }
+            }
+
+            p {
+                font-size: 1.3em;
+                margin: 3% 0 12% 0;
+            }
+        }
+    }
+
+    &_ChoixDep {
+        height: 92vh;
+        scroll-snap-align: start;
+    }
 }

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 html,
 body {
   max-width: 100vw;
@@ -21,6 +24,31 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+@font-face {
+  font-family: 'DinBold';
+  src: url(/frontend/public/fonts/DINOffcPro-Bold.ttf);
+}
+
+@font-face {
+  font-family: 'DinRegular';
+  src: url(/frontend/public/fonts/DIN.ttf);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a {
+  font-family: 'DinBold', sans-serif;
+  line-height: 120%;
+}
+
+p {
+  font-family: 'DinRegular', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
