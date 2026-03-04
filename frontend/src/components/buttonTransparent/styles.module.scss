@@ -2,14 +2,16 @@
 @use "@styles/mixins";
 
 .button {
-    background-color: rgba($color: variables.$text, $alpha: 0.2);
-    padding: 2% 5%;
+    background-color: rgba($color: variables.$text, $alpha: 0.05);
+    padding: 5% 12%;
+    border: solid rgba($color: variables.$text, $alpha: 0.2);
     border-radius: 12px;
     font-weight: 600;
     box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.2);
     transition: all 0.3s;
 
     &:hover {
+        border: solid rgba($color: variables.$primary, $alpha: 0.6);
         transition: all 0.3s;
         cursor: pointer;
     }
