@@ -48,15 +48,15 @@
         .choixDep {
             @include mixins.flexcenter;
             color: variables.$text;
-            margin: 2% 0 0 0;
+            margin: 3% 0 0 0;
 
             &_Container {
-                width: 64%;
+                width: 60%;
                 height: 32vh;
                 background-color: white;
                 border-radius: 21px;
                 flex-direction: column;
-                padding: 2% 4%;
+                padding: 2% 3%;
                 box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.2);
 
                 div {
@@ -100,7 +100,7 @@
             margin: 1.2% 0;
 
             &_container {
-                width: 64%;
+                width: 60%;
                 height: auto;
                 min-height: 10vh;
                 background-color: white;
