@@ -41,8 +41,56 @@
         }
     }
 
-    &_ChoixDep {
+    &_Bottom {
         height: 92vh;
         scroll-snap-align: start;
+
+        .choixDep {
+            @include mixins.flexcenter;
+            color: variables.$text;
+            margin: 3% 0 0 0;
+
+            &_Container {
+            width: 64%;
+            height: 32vh;
+            background-color: white;
+            border-radius: 21px;
+            flex-direction: column;
+            padding: 2% 4%;
+            box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.2);
+
+            div {
+                display: flex;
+                flex-direction: row;
+                @include mixins.flexcenter;
+                justify-content: space-around;
+                margin: 3% 0;
+                flex-wrap: wrap;
+
+                img {
+                    width: auto;
+                    height: 32px;
+                }
+        
+                a {
+                    color: variables.$text;
+                    border: solid variables.$primary;
+                    border-radius: 21px;
+                    text-align: left;
+                    transition: all 0.3s;
+                    padding: 3% 2%;
+
+                    &:hover {
+                        border: solid variables.$tertiary;
+                        transition: all 0.3s;
+                    }
+                }
+            }
+
+            a {
+                color: variables.$white;
+            }
+        }
+        }
     }
 }

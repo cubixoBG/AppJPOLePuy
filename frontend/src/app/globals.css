@@ -8,7 +8,7 @@ body {
 }
 
 body {
-  background-color: white;
+  background-color: #FAFAFA;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -43,6 +43,14 @@ h6,
 a {
   font-family: 'DinBold', sans-serif;
   line-height: 120%;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.6em;
 }
 
 p {
