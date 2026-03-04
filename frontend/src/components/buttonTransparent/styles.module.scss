@@ -2,7 +2,7 @@
 @use "@styles/mixins";
 
 .button {
-    background-color: variables.$tertiary;
+    background-color: rgba($color: variables.$text, $alpha: 0.2);
     padding: 2% 5%;
     border-radius: 12px;
     font-weight: 600;
@@ -10,7 +10,6 @@
     transition: all 0.3s;
 
     &:hover {
-        margin: 0 0 0 2%;
         transition: all 0.3s;
         cursor: pointer;
     }

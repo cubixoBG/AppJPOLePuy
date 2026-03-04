@@ -1,7 +1,9 @@
 import Image from "next/image";
 import styles from "./page.module.scss";
 import ButtonFull from "@components/buttonFull/ButtonFull";
-import SectionImmersion from "@components/immersionSection/ImmersionSection"
+import ButtonTransparent from "@components/buttonTransparent/ButtonTransparent";
+import SectionImmersion from "@components/immersionSection/ImmersionSection";
+import Footer from "@components/footer/Footer"
 
 export default function Home() {
 
@@ -20,8 +22,8 @@ export default function Home() {
       <section className={styles.accueil_Bottom} id="accueil_Bottom">
         <SectionImmersion />
 
-        <div className={styles.choixDep}>
-          <section className={styles.choixDep_Container}>
+        <section className={styles.choixDep}>
+          <div className={styles.choixDep_Container}>
             <h2>Choisissez un département</h2>
             <p>Sélectionnez le département qui vous intéresse le plus pour commencer votre inscription.</p>
             <div>
@@ -44,8 +46,22 @@ export default function Home() {
                   synthèse</p>
               </article></a>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
+
+        <section className={styles.datesImmersion}>
+          <div className={styles.datesImmersion_container}>
+            <div>
+              <h3>Déjà inscrit ?</h3>
+              <p>Réservez votre journée d'immersion pour vivre une journée complète au
+                sein de l'IUT (cours, visite, échanges).</p>
+            </div>
+            <div className={styles.datesImmersion_container_right}>
+              <ButtonTransparent texte="Réserver une date" lien="" />
+            </div>
+          </div>
+        </section>
+        <Footer />
       </section>
     </main>
   );

@@ -1,0 +1,9 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.footer {
+    color: variables.$text;
+    width: 100%;
+    text-align: center;
+    margin-top: 4%;
+}
