@@ -25,7 +25,7 @@ class Departement
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nom�_responsable = null;
+    private ?string $nom_responsable = null;
 
     public function getId(): ?int
     {
@@ -68,14 +68,14 @@ class Departement
         return $this;
     }
 
-    public function getNom�Responsable(): ?string
+    public function getNomResponsable(): ?string
     {
-        return $this->nom�_responsable;
+        return $this->nom_responsable;
     }
 
-    public function setNom�Responsable(?string $nom�_responsable): static
+    public function setNomResponsable(?string $nom_responsable): static
     {
-        $this->nom�_responsable = $nom�_responsable;
+        $this->nom_responsable = $nom_responsable;
 
         return $this;
     }

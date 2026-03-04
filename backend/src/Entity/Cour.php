@@ -20,7 +20,7 @@ class Cour
     /**
      * @var Collection<int, Edt>
      */
-    #[ORM\ManyToMany(targetEntity: Edt::class, inversedBy: 'duree')]
+    #[ORM\ManyToMany(targetEntity: Edt::class, inversedBy: 'cours')]
     private Collection $id_edt;
 
     #[ORM\Column(length: 255, nullable: true)]

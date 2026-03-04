@@ -21,7 +21,7 @@ class Avis
     private ?User $id_visiteur = null;
 
     #[ORM\Column(length: 255)]
-    private ?int $² = null;
+    private ?int $note = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commentaire = null;
