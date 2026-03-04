@@ -11,7 +11,7 @@ export default async function TestPage() {
         "Content-Type": "application/ld+json",
     },
         body: JSON.stringify({
-        id_visiteur: "/api/user/1",
+        visiteur: "/api/users/11735",
         commentaire: "string",
         date: "2026-03-04T13:11:55.420Z",
         note: 0,

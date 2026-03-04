@@ -35,7 +35,7 @@ final class AvisFactory extends PersistentProxyObjectFactory
     {
         return [
             'date' => self::faker()->dateTime(),
-            'id_visiteur' => UserFactory::new(),
+            'visiteur' => UserFactory::new(),
             'note' => self::faker()->numberBetween(1, 5),
             'commentaire' => self::faker()->optional()->sentence(12),    
         ];

@@ -18,9 +18,9 @@ class Avis
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $id_visiteur = null;
+    private ?User $visiteur = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $note = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -34,19 +34,19 @@ class Avis
         return $this->id;
     }
 
-    public function getIdVisiteur(): ?User
+    public function getVisiteur(): ?User
     {
-        return $this->id_visiteur;
+        return $this->visiteur;
     }
 
-    public function setIdVisiteur(User $id_visiteur): static
+    public function setVisiteur(User $visiteur): static
     {
-        $this->id_visiteur = $id_visiteur;
+        $this->visiteur = $visiteur;
 
         return $this;
     }
 
-    public function getNote(): ?string
+    public function getNote(): ?int
     {
         return $this->note;
     }
