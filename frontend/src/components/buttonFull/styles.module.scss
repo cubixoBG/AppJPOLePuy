@@ -3,6 +3,7 @@
 
 .button {
     @include mixins.boutonFull(variables.$tertiary);
+    height: 50px;
 
     &:hover {
         margin: 0 0 0 2%;

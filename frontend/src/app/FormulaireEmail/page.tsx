@@ -2,7 +2,7 @@ import styles from "./page.module.scss";
 import ButtonFull from "@components/buttonFull/ButtonFull";
 import Footer from "@components/footer/Footer";
 
-export default function FormulaireEmail() {
+export default function formulaireEmail() {
 
     return (
         <main>

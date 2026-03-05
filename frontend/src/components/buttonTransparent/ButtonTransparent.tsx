@@ -1,12 +1,14 @@
 'use client'
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
+import Link from "next/link";
 
 export default function ButtonTransparent({ texte, lien }) {
 
-    
     return (
-        <a href={lien} className={styles.button}>
-            {texte}
-        </a>
+        <button className={styles.button}>
+            <Link href={lien}>
+            <p>{texte}</p>
+            </Link>
+        </button>
     );
 }

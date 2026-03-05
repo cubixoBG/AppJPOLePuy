@@ -8,7 +8,7 @@ export default function ButtonFull({ texte, lien}) {
     return (
         <button className={styles.button}>
             <Link href={lien}>
-            {texte}
+            <p>{texte}</p>
             </Link>
         </button>
     );
