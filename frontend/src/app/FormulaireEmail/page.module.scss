@@ -1,0 +1,41 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.formEmail {
+    height: 80vh;
+    
+    .formulaire {
+        @include mixins.flexcenter;
+        width: 100%;
+
+        &_container {
+            @include mixins.formContainer;
+
+            &_header {
+                margin-bottom: 9%;
+
+                h2 {
+                    margin: 3% 0;
+                }
+
+                img {
+                    background-color: rgba($color: variables.$secondary, $alpha: 0.1);
+                    border-radius: 100px;
+                    padding: 3% 3%;
+                }
+            }
+
+            form {
+                @include mixins.form;
+
+                input {
+                     @include mixins.formInput;
+                }
+
+                button {
+                    background-color: variables.$secondary;
+                }
+            }
+        }
+    }
+}

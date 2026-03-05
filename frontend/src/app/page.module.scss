@@ -13,6 +13,7 @@
         background: linear-gradient(160deg, variables.$primary 40%, #00A39E);
         scroll-snap-align: start;
         @include mixins.flexcenter;
+        color: variables.$white;
 
         img {
             width: 75px;
@@ -25,6 +26,16 @@
         &_text {
             text-align: center;
             width: 40%;
+
+            .boutonAccueil {
+                @include mixins.boutonFull(variables.$tertiary);
+
+                &:hover {
+                    margin: 0 0 0 2%;
+                    transition: all 0.3s;
+                    cursor: pointer;
+                }
+            }
 
             h1 {
                 font-size: 4.6em;

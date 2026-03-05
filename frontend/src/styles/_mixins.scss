@@ -1,8 +1,49 @@
-
+@use "@styles/variables";
 
 @mixin flexcenter {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+// Formulaire
+
+@mixin form {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin formContainer {
+    margin: 3% 0 0 0;
+    width: 30%;
+    flex-direction: column;
+    background-color: variables.$white;
+    border: solid rgba($color: variables.$text, $alpha: 0.1) 1px;
+    border-radius: 21px;
+    box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.2);
+    padding: 3% 3%;
+    color: variables.$text;
+}
+
+@mixin formInput {
+    padding: 2% 3%;
+    margin: 2% 0;
+    border-radius: 12px;
+    border: solid rgba($color: variables.$text, $alpha: 0.1) 2px;
+    background-color: rgba($color: variables.$text, $alpha: 0.06);
+}
+
+// Boutons
+
+@mixin boutonFull($couleur) {
+    background-color: $couleur;
+    padding: 2% 5%;
+    border-radius: 12px;
+    font-weight: 600;
+    border: none;
+    color: variables.$white;
+    box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
 }

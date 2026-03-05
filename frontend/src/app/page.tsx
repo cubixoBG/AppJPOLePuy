@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "./page.module.scss";
 import ButtonFull from "@components/buttonFull/ButtonFull";
 import ButtonTransparent from "@components/buttonTransparent/ButtonTransparent";
@@ -16,12 +15,11 @@ export default function Home() {
             <br /><span>Site  du Puy-en-Velay</span></h1>
           <p>Nous sommes ravis de vous accueillir ! Inscrivez-vous en quelques
             clics pour profiter pleinement de votre visite.</p>
-          <ButtonFull texte="Commencer ➔" lien="#accueil_Bottom" />
+          <a href="#accueil_Bottom" className={styles.boutonAccueil}>Commencer ➔</a>
         </div>
       </section>
       <section className={styles.accueil_Bottom} id="accueil_Bottom">
         <SectionImmersion />
-
         <section className={styles.choixDep}>
           <div className={styles.choixDep_Container}>
             <h2>Choisissez un département</h2>

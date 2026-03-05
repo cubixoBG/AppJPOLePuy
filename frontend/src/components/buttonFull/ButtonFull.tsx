@@ -1,12 +1,15 @@
 'use client'
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
+import Link from "next/link";
 
-export default function ButtonFull({ texte, lien }) {
+export default function ButtonFull({ texte, lien}) {
 
     
     return (
-        <a href={lien} className={styles.button}>
+        <button className={styles.button}>
+            <Link href={lien}>
             {texte}
-        </a>
+            </Link>
+        </button>
     );
 }
