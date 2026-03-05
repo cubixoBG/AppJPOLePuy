@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 
 export default function Posts() {
+    console.log('API_KEY =', process.env.API_KEY);
+
     const [deps, setDeps] = useState([]);
 
     useEffect(() => {
