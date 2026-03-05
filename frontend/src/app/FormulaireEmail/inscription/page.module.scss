@@ -1,8 +1,6 @@
 @use "@styles/variables";
 @use "@styles/mixins";
 
-
-
 .formulaire {
     @include mixins.flexcenter;
     width: 100%;
@@ -13,24 +11,30 @@
 
         &_header {
             margin-bottom: 9%;
-
-            h2 {
-                margin: 3% 0;
-            }
-
-            img {
-                background-color: rgba($color: variables.$secondary, $alpha: 0.1);
-                border-radius: 100px;
-                padding: 3% 3%;
-            }
+            text-align: left;
         }
 
         form {
             @include mixins.form;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
 
-            div {
+            .column {
                 display: flex;
                 flex-direction: column;
+                width: 100%;
+            }
+
+            .row {
+                display: flex;
+                flex-direction: row;
+                gap: 20px;
+                width: 100%;
+
+                .column {
+                    flex: 1;
+                }
             }
 
             input {
@@ -39,6 +43,10 @@
 
             button {
                 background-color: variables.$secondary;
+            }
+
+            span {
+                color: variables.$tertiary;
             }
         }
     }
