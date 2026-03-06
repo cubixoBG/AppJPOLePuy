@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    ✅ CORRECTION BUG #4 :
+    - Suppression de processUncoveredFiles (supprimé dans PHPUnit 10)
+      remplacé par includeUncoveredFiles
+    - Remplacement de <listeners> (déprécié PHPUnit 10)
+      par <extensions> avec SymfonyExtension
+    - Ajout defaultTestSuite pour lancer tous les tests d'un coup
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+         defaultTestSuite="all"
+>
+    <php>
+        <ini name="display_errors" value="1" />
+        <ini name="error_reporting" value="-1" />
+        <server name="APP_ENV" value="test" force="true" />
+        <server name="SHELL_VERBOSITY" value="-1" />
+    </php>
+
+    <testsuites>
+        <!-- Lance tous les tests -->
+        <testsuite name="all">
+            <directory>tests</directory>
+        </testsuite>
+        <!-- Suites individuelles par ticket Jira -->
+        <testsuite name="SCRUM-74-CRUD">
+            <file>tests/Entity/UtilisateurCrudTest.php</file>
+        </testsuite>
+        <testsuite name="SCRUM-75-Metier">
+            <file>tests/Entity/UtilisateurMetierTest.php</file>
+        </testsuite>
+        <testsuite name="SCRUM-76-Securite">
+            <file>tests/Security/UtilisateurSecuriteTest.php</file>
+        </testsuite>
+    </testsuites>
+
+    <coverage includeUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <file>src/Kernel.php</file>
+        </exclude>
+    </coverage>
+
+    <extensions>
+        <bootstrap class="Symfony\Bridge\PhpUnit\SymfonyExtension" />
+    </extensions>
+
+</phpunit>
