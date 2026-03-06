@@ -53,7 +53,7 @@ h3 {
   font-size: 1.6em;
 }
 
-p, label, input {
+p, label, input, span {
   font-family: 'DinRegular', sans-serif;
   font-size: 1.2em;
 }
