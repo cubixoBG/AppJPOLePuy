@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Header from "@/components/Header/header";
 
 const STATS = [
   { value: 8, label: "Visiteurs totaux", icon: <IconPerson /> },
@@ -125,8 +126,13 @@ function PieChart() {
   );
 }
 
-/* ─── Main Dashboard ──────────────────────────────────────── */
 const DEPT_OPTIONS = ["Tous", "MMI", "Informatique", "Chimie"];
+
+const deptClass: Record<string, string> = {
+  MMI: "dept-badge dept-mmi",
+  Informatique: "dept-badge dept-informatique",
+  Chimie: "dept-badge dept-chimie",
+};
 
 export default function AdminDashboard() {
   const [search, setSearch] = useState("");
@@ -141,62 +147,71 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      {/* ── Page header ── */}
-      <div>
-        <div>
-          <h1>Tableau de bord</h1>
-          <p>Gestion des journées d'immersion</p>
-        </div>
-        <div>
-          <button>Ajout journée Immersion</button>
-          <button>Ajout EDT JI</button>
-          <button>⚠ Alerte Présentateurs</button>
-        </div>
-      </div>
+      {/* Page header */}
+      <Header
+        title="Tableau de bord"
+        subtitle="Gestion des journées d'immersion"
+        actions={[
+          { label: "Ajout journée Immersion", variant: "primary" },
+          { label: "Ajout EDT JI", variant: "primary" },
+          { label: "⚠ Alerte Présentateurs", variant: "warn" },
+        ]}
+      />
 
-      {/* ── Stat cards ── */}
-      <div>
+      {/* Stats */}
+      <div className="stats-row">
         {STATS.map((s, i) => (
-          <div key={i}>
-            <div>{s.icon}</div>
-            <div>
-              <span>{s.value}</span>
-              <span>{s.label}</span>
+          <div key={i} className="stat-card">
+            <div className="stat-icon">{s.icon}</div>
+            <div className="stat-info">
+              <span className="stat-value">{s.value}</span>
+              <span className="stat-label">{s.label}</span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* ── Charts ── */}
-      <div>
-        <div>
-          <h3>Inscriptions par département</h3>
-          <BarChart />
+      {/* Charts */}
+      <div className="charts-row">
+        <div className="chart-card">
+          <h3 className="chart-title">Inscriptions par département</h3>
+          <div className="chart-body">
+            <BarChart />
+          </div>
         </div>
-        <div>
-          <h3>Répartition par établissement</h3>
-          <PieChart />
+        <div className="chart-card">
+          <h3 className="chart-title">Répartition par établissement</h3>
+          <div className="chart-body-center">
+            <PieChart />
+          </div>
         </div>
       </div>
 
-      {/* ── Visitors table ── */}
-      <div>
-        <div>
-          <h3>Liste des visiteurs</h3>
-          <div>
-            <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)}>
+      {/* Table */}
+      <div className="table-card">
+        <div className="table-header">
+          <h3 className="table-title">Liste des visiteurs</h3>
+          <div className="table-controls">
+            <select className="filter-select" value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)}>
               {DEPT_OPTIONS.map((o) => <option key={o}>{o}</option>)}
             </select>
-            <input
-              type="text"
-              placeholder="Rechercher..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className="search-wrap">
+              <svg className="search-icon" viewBox="0 0 20 20" fill="none" width="14" height="14">
+                <circle cx="8.5" cy="8.5" r="5.5" stroke="#9ca3af" strokeWidth="1.5" />
+                <path d="M13 13l3 3" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Rechercher..."
+                className="search-input"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
-        <table>
+        <table className="visitors-table">
           <thead>
             <tr>
               <th>Nom</th>
@@ -208,16 +223,14 @@ export default function AdminDashboard() {
           <tbody>
             {filtered.map((v, i) => (
               <tr key={i}>
-                <td>{v.nom}</td>
-                <td>{v.email}</td>
-                <td>{v.dept}</td>
+                <td className="td-nom">{v.nom}</td>
+                <td className="td-email">{v.email}</td>
+                <td><span className={deptClass[v.dept] ?? "dept-badge"}>{v.dept}</span></td>
                 <td>{v.etab}</td>
               </tr>
             ))}
             {filtered.length === 0 && (
-              <tr>
-                <td colSpan={4}>Aucun résultat</td>
-              </tr>
+              <tr><td colSpan={4} className="table-empty">Aucun résultat</td></tr>
             )}
           </tbody>
         </table>
