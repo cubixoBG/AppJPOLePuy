@@ -4,7 +4,7 @@ import ButtonFull from "@components/buttonFull/ButtonFull";
 import ButtonTransparent from "@components/buttonTransparent/ButtonTransparent";
 import SectionImmersion from "@components/immersionSection/ImmersionSection";
 
-export default function identification() {
+export default function validation() {
 
     return (
         <main className={styles.main}>
@@ -17,9 +17,9 @@ export default function identification() {
                     </div>
                     <form action="#">
                         <ButtonFull texte="Réserver une journée d'immersion maintenant" lien="#" />
-                        <ButtonTransparent texte="Je m'inscrirai plus tard" lien="/" />
+                        <ButtonTransparent texte="Je réserverais plus tard" lien="/" />
                     </form>
-                    <p>Vous pourrez réserver une date à tout moment depuis la page d'accueil.</p>
+                    <p className={styles.textInfo}>Vous pourrez réserver une date à tout moment depuis la page d'accueil.</p>
                 </div>
             </section>
             <SectionImmersion />
