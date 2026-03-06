@@ -2,11 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-    // 1. L'URL de ton vrai backend (ex: un microservice, Jira, GitHub, etc.)
-    const BACKEND_URL = "http://webserver:80/api/departements";
 
     // 2. Appel au backend avec fetch
-    const response = await fetch(BACKEND_URL, {
+    const response = await fetch("http://webserver:80/api/departements", {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -27,7 +25,7 @@ export async function GET() {
     // 4. On récupère les données
     const data = await response.json();
 
-    // 5. On renvoie les données au client (ton front-end)
+    // 5. On renvoie les données au client
     return NextResponse.json(data);
 
     } catch (error) {
