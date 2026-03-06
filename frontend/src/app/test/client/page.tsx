@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 
 export default function Posts() {
-    console.log('API_KEY =', process.env.API_KEY);
-
     const [deps, setDeps] = useState([]);
 
     useEffect(() => {
@@ -18,7 +16,7 @@ export default function Posts() {
 
     return (
         <ul>
-            {deps.map((d : any) => <li key={d.id}>{d.nom}</li>)}
+            {deps.map((d : any) => <li key={d.id}>{d.logo} {d.nom} {d.description} {d.responsable}</li>)}
         </ul>
     );
 }

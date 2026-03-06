@@ -33,11 +33,33 @@ final class DepartementFactory extends PersistentProxyObjectFactory
     #[\Override]
     protected function defaults(): array|callable
     {
+
+        $name = [
+            'Informatique',
+            'GEA',
+            'TC',
+            'GMP',
+            'GEII',
+            'MP',
+            'Chimie',
+            'MMI',
+        ];
+
+        $descriptions = [
+            'Formation axée sur les compétences techniques et professionnelles.',
+            'Département formant aux métiers du management et de la gestion.',
+            'Département spécialisé dans les technologies industrielles.',
+            'Formation professionnalisante en lien avec les entreprises locales.',
+            'Département orienté vers l’innovation technologique.',
+        ];
+
+        $emojis = ['💻','📊','⚙️','📡','🧪','🏗️'];
+
         return [
-            'description' => self::faker()->text(255),
-            'nom' => self::faker()->text(255),
+            'description' => self::faker()->randomElement($descriptions),
+            'nom' => self::faker()->randomElement($name),
             'nom_responsable' => self::faker()->name(),
-            'logo' => self::faker()->imageUrl(),
+            'logo' => self::faker()->randomElement($emojis),
         ];
     }
 
