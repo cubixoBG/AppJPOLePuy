@@ -9,6 +9,6 @@ final class DefaultDepartementStory extends Story
 {
     public function build(): void
     {
-        DepartementFactory::createMany(200);
+        DepartementFactory::createMany(5);
     }
 }
