@@ -15,7 +15,7 @@ export default function ConnexionManager() {
                     <p>Sélectionnez la date qui vous convient le mieux.</p>
                 </div>
                 <div className={styles.choixDateImmersion_dates}>
-
+                    
                 </div>
             </section>
         );
