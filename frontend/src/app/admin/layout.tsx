@@ -1,56 +1,31 @@
 import Link from "next/link";
-import styles from "./admin.module.css";
 
 const navLinks = [
-  { href: "/admin",               label: "Tableau de bord", icon: "◻" },
-  { href: "/admin/visiteurs",     label: "Visiteurs",        icon: "👥" },
-  { href: "/admin/planning",      label: "Planning immersion", icon: "📅" },
-  { href: "/admin/stats",         label: "Statistiques",     icon: "📊" },
-  { href: "/admin/notification",  label: "Notifications",    icon: "🔔" },
+  { href: "/admin",              label: "Tableau de bord" },
+  { href: "/admin/visiteurs",    label: "Visiteurs" },
+  { href: "/admin/planning",     label: "Planning immersion" },
+  { href: "/admin/stats",        label: "Statistiques" },
+  { href: "/admin/notification", label: "Notifications" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={styles.layout}>
-      {/* Sidebar */}
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <div className={styles.sidebarLogo}>
-            <div className={styles.logoMark}>IUT</div>
-            <div>
-              <span className={styles.sidebarBrand}>IUT Clermont</span>
-              <span className={styles.sidebarSub}>Administration JPO</span>
-            </div>
+    <div>
+      <header>
+        <div>
+          <svg viewBox="0 0 40 40" fill="none" width="36" height="36">
+            <path d="M20 3L5 9v10c0 9 6.5 17.4 15 19.5C29.5 36.4 36 28 36 19V9L20 3z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" />
+            <text x="20" y="24" textAnchor="middle" fill="white" fontSize="9" fontWeight="700" fontFamily="sans-serif">IUT</text>
+          </svg>
+          <div>
+            <span>IUT Clermont-Ferrand</span>
+            <span>Université Clermont Auvergne</span>
           </div>
         </div>
+        <Link href="/">Retour au site</Link>
+      </header>
 
-        <nav className={styles.nav}>
-          {navLinks.map((l) => (
-            <Link key={l.href} href={l.href} className={styles.navLink}>
-              <span className={styles.navIcon}>{l.icon}</span>
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className={styles.sidebarFooter}>
-          <Link href="/login" className={styles.logoutBtn}>
-            ← Se déconnecter
-          </Link>
-        </div>
-      </aside>
-
-      {/* Content */}
-      <div className={styles.contentArea}>
-        {/* Top bar */}
-        <header className={styles.topbar}>
-          <span className={styles.topbarTitle}>Journée Portes Ouvertes 2026</span>
-          <div className={styles.topbarRight}>
-            <span className={styles.adminBadge}>Admin</span>
-          </div>
-        </header>
-        <main className={styles.main}>{children}</main>
-      </div>
+      <main>{children}</main>
     </div>
   );
 }
