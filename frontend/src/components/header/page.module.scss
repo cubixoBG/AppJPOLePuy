@@ -41,6 +41,7 @@
             li {
                 height: 100%;
                 width: 100px;
+                white-space: nowrap;
 
                 a {
                     border: solid rgba($color: variables.$white, $alpha: 0.3) 3px;

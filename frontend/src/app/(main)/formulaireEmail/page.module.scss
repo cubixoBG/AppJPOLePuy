@@ -1,8 +1,6 @@
 @use "@styles/variables";
 @use "@styles/mixins";
 
-
-
 .formulaire {
     @include mixins.flexcenter;
     width: 100%;

@@ -1,0 +1,36 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.admin {
+    @include mixins.flexcenter;
+
+    &_container {
+        @include mixins.formContainer;
+
+        &_header {
+            margin-bottom: 12%;
+
+            img {
+                width: auto;
+                height: 50px;
+                background-color: rgba($color: variables.$secondary, $alpha: 0.1);
+                padding: 2% 3%;
+                border-radius: 21px;
+                margin: 4% 0;
+            }
+        }
+
+        &_connexion {
+            @include mixins.form;
+
+            input {
+                @include mixins.formInput;
+            }
+
+            button {
+                margin-top: 4%;
+                background-color: variables.$primary;
+            }
+        }
+    }
+}
