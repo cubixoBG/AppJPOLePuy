@@ -5,38 +5,8 @@ namespace App\Tests\Security;
 use App\Entity\Data;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-/**
- * ✅ CORRECTIONS v3 appliquées :
- *
- * 1. use App\Entity\User supprimé : l'entité User n'existe pas dans la branche TDD.
- *    Remplacé par use App\Entity\Data (seule entité disponible).
- *
- * 2. Tous les tests qui référençaient User (getMdp, setMdp, etc.) supprimés :
- *    - testMdpHashNestPasStokeEnClair (User::setMdp n'existe pas)
- *    - testReponseGetUsersNExposePasMdp → route /api/users inexistante
- *    - testReponsePostUserNExposePasMdpEnClair → idem
- *    - testReponseGetUserParIdNExposePasMdp → idem
- *    - testInjectionSQLDansNomUser → idem
- *    - testInjectionXSSEntreGuillemets → idem
- *    - testChampMailAvecValeurTropLongue → idem
- *
- * 3. Mails hardcodés corrigés : non applicable ici (Data n'a pas de mail).
- *    Les tests POST utilisant Data passent une valeur unique via uniqid().
- *
- * 4. Tests bcrypt conservés (pure PHP, aucune dépendance entité).
- *
- * 5. Tests HTTP réécrits sur /api/data (seule route disponible).
- *
- * ⚠️  Ces tests nécessitent :
- *    - composer require --dev phpunit/phpunit symfony/test-pack
- *    - php bin/console doctrine:database:create --env=test
- *    - php bin/console doctrine:migrations:migrate --env=test --no-interaction
- */
 class SecuriteTest extends WebTestCase
 {
-    // =========================================================================
-    // Hashage bcrypt — tests purs PHP (pas de BDD)
-    // =========================================================================
 
     public function testMdpHashAvecBcryptEstVerifiable(): void
     {
@@ -75,9 +45,6 @@ class SecuriteTest extends WebTestCase
         $this->assertNotSame('secret', $hash);
     }
 
-    // =========================================================================
-    // Headers HTTP — tests sur /api/data (seule route existante)
-    // =========================================================================
 
     public function testReponseApiContientContentTypeJsonLd(): void
     {
@@ -132,9 +99,6 @@ class SecuriteTest extends WebTestCase
         }
     }
 
-    // =========================================================================
-    // Routes — existence et codes de retour
-    // =========================================================================
 
     public function testApiDocumentationEstAccessible(): void
     {
@@ -158,9 +122,6 @@ class SecuriteTest extends WebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    // =========================================================================
-    // Robustesse — injections et valeurs limites sur /api/data
-    // =========================================================================
 
     public function testInjectionSQLDansDataNePasProvoquer500(): void
     {
@@ -233,7 +194,6 @@ class SecuriteTest extends WebTestCase
             'HTTP_CONTENT_TYPE' => 'application/ld+json',
         ]);
 
-        // Deux POSTs avec des valeurs uniques → les deux doivent retourner 201
         $corps1 = json_encode(['data' => 'test_' . uniqid()]);
         $corps2 = json_encode(['data' => 'test_' . uniqid()]);
 

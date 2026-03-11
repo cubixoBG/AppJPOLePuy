@@ -4,23 +4,6 @@ namespace App\Tests\Api;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-/**
- * ✅ CORRECTIONS v3 appliquées :
- *
- * 1. Toutes les routes /api/users, /api/avis, /api/departements, etc. supprimées :
- *    Ces entités n'existent PAS dans la branche TDD du repo.
- *    La seule entité existante est Data → seule route disponible : /api/data
- *
- * 2. corpsDataValide() remplace corpsUserValide() :
- *    Le seul champ disponible est "data" (string, length 255)
- *
- * 3. Mail dupliqué → non applicable (l'entité Data n'a pas de champ mail)
- *
- * ⚠️  Ces tests nécessitent :
- *    - composer require --dev phpunit/phpunit symfony/test-pack
- *    - php bin/console doctrine:database:create --env=test
- *    - php bin/console doctrine:migrations:migrate --env=test --no-interaction
- */
 class ConformiteRequetesTest extends WebTestCase
 {
     private function clientJsonLd(): \Symfony\Bundle\FrameworkBundle\KernelBrowser
@@ -39,9 +22,6 @@ class ConformiteRequetesTest extends WebTestCase
         ]);
     }
 
-    // =========================================================================
-    // Codes de statut — GET collections
-    // =========================================================================
 
     public function testGetCollectionDataRetourne200(): void
     {
@@ -50,9 +30,6 @@ class ConformiteRequetesTest extends WebTestCase
         $this->assertResponseStatusCodeSame(200);
     }
 
-    // =========================================================================
-    // Codes de statut — GET ressource inexistante
-    // =========================================================================
 
     public function testGetDataInexistantRetourne404(): void
     {
@@ -61,9 +38,6 @@ class ConformiteRequetesTest extends WebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    // =========================================================================
-    // Codes de statut — POST
-    // =========================================================================
 
     public function testPostDataValideRetourne201(): void
     {
@@ -86,9 +60,6 @@ class ConformiteRequetesTest extends WebTestCase
         $this->assertResponseStatusCodeSame(400);
     }
 
-    // =========================================================================
-    // Content-Type
-    // =========================================================================
 
     public function testGetDataContentTypeEstJsonLd(): void
     {
@@ -97,9 +68,6 @@ class ConformiteRequetesTest extends WebTestCase
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
     }
 
-    // =========================================================================
-    // Structure JSON-LD
-    // =========================================================================
 
     public function testGetDataContientContextJsonLd(): void
     {
@@ -132,9 +100,6 @@ class ConformiteRequetesTest extends WebTestCase
         $this->assertIsInt($data['hydra:totalItems']);
     }
 
-    // =========================================================================
-    // Réponse POST
-    // =========================================================================
 
     public function testPostDataRenvoieObjetAvecId(): void
     {
@@ -158,9 +123,6 @@ class ConformiteRequetesTest extends WebTestCase
         $this->assertSame($valeur, $reponse['data']);
     }
 
-    // =========================================================================
-    // Méthodes interdites
-    // =========================================================================
 
     public function testPutSurCollectionRetourne405(): void
     {
@@ -176,9 +138,6 @@ class ConformiteRequetesTest extends WebTestCase
         $this->assertResponseStatusCodeSame(405);
     }
 
-    // =========================================================================
-    // CORS
-    // =========================================================================
 
     public function testRequeteOptionsRetourneHeadersCorsSurData(): void
     {

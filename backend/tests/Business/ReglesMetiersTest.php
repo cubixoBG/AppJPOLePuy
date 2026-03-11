@@ -6,32 +6,8 @@ use App\Entity\Data;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * ✅ CORRECTIONS v3 appliquées :
- *
- * 1. Toutes les entités inexistantes dans la branche TDD supprimées :
- *    User, Avis, Contact, Departement, Edt, Journee, Notification, Cour
- *    → La branche TDD ne contient qu'une seule entité : Data (id + data)
- *
- * 2. Import DataProvider ajouté (Bug #2 corrigé) :
- *    use PHPUnit\Framework\Attributes\DataProvider;
- *    Sans cet import, #[DataProvider] était résolu comme App\Tests\Business\DataProvider
- *    → classe inexistante → le DataProvider était silencieusement ignoré
- *    → PHPUnit tentait de lancer testDataValeurDansLaPlage(string $val) sans argument
- *    → Fatal error : "Too few arguments"
- *
- * 3. Tests réécrits sur la vraie entité Data :
- *    - getData() / setData()
- *    - getId() (non settable, géré par Doctrine)
- *    - Valeur string obligatoire (non null après set)
- *    - Longueur max 255 (conforme au schema Doctrine)
- *    - DataProvider sur plusieurs valeurs valides
- */
 class ReglesMetiersTest extends TestCase
 {
-    // =========================================================================
-    // Entité Data — tests unitaires purs (sans BDD)
-    // =========================================================================
 
     public function testDataNouvelleInstanceAIdNull(): void
     {
@@ -55,7 +31,6 @@ class ReglesMetiersTest extends TestCase
     public function testDataSetDataEstFluent(): void
     {
         $data = new Data();
-        // setData retourne static → permet le chaînage
         $this->assertSame($data, $data->setData('chaine'));
     }
 
@@ -92,7 +67,6 @@ class ReglesMetiersTest extends TestCase
         $data = new Data();
         $valeur = str_repeat('a', 255);
         $data->setData($valeur);
-        // Doctrine Column(length: 255) → vérification applicative
         $this->assertLessThanOrEqual(255, strlen($data->getData()));
     }
 
@@ -139,9 +113,6 @@ class ReglesMetiersTest extends TestCase
         $this->assertSame('deuxieme valeur', $data->getData());
     }
 
-    // =========================================================================
-    // DataProvider — ✅ Bug #2 corrigé : import use ajouté
-    // =========================================================================
 
     #[DataProvider('fournirValeursValides')]
     public function testDataValeurDansLaPlage(string $valeur): void
@@ -164,9 +135,6 @@ class ReglesMetiersTest extends TestCase
         ];
     }
 
-    // =========================================================================
-    // Scénario métier : enregistrement d'une donnée JPO
-    // =========================================================================
 
     public function testScenarioEnregistrementDonneeJPO(): void
     {
