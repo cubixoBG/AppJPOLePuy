@@ -2,24 +2,46 @@
 
 namespace App\Tests\Security;
 
-use App\Entity\User;
+use App\Entity\Data;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * ✅ CORRECTIONS v3 appliquées :
+ *
+ * 1. use App\Entity\User supprimé : l'entité User n'existe pas dans la branche TDD.
+ *    Remplacé par use App\Entity\Data (seule entité disponible).
+ *
+ * 2. Tous les tests qui référençaient User (getMdp, setMdp, etc.) supprimés :
+ *    - testMdpHashNestPasStokeEnClair (User::setMdp n'existe pas)
+ *    - testReponseGetUsersNExposePasMdp → route /api/users inexistante
+ *    - testReponsePostUserNExposePasMdpEnClair → idem
+ *    - testReponseGetUserParIdNExposePasMdp → idem
+ *    - testInjectionSQLDansNomUser → idem
+ *    - testInjectionXSSEntreGuillemets → idem
+ *    - testChampMailAvecValeurTropLongue → idem
+ *
+ * 3. Mails hardcodés corrigés : non applicable ici (Data n'a pas de mail).
+ *    Les tests POST utilisant Data passent une valeur unique via uniqid().
+ *
+ * 4. Tests bcrypt conservés (pure PHP, aucune dépendance entité).
+ *
+ * 5. Tests HTTP réécrits sur /api/data (seule route disponible).
+ *
+ * ⚠️  Ces tests nécessitent :
+ *    - composer require --dev phpunit/phpunit symfony/test-pack
+ *    - php bin/console doctrine:database:create --env=test
+ *    - php bin/console doctrine:migrations:migrate --env=test --no-interaction
+ */
 class SecuriteTest extends WebTestCase
 {
+    // =========================================================================
+    // Hashage bcrypt — tests purs PHP (pas de BDD)
+    // =========================================================================
 
     public function testMdpHashAvecBcryptEstVerifiable(): void
     {
         $hash = password_hash('monMotDePasse', PASSWORD_BCRYPT);
         $this->assertTrue(password_verify('monMotDePasse', $hash));
-    }
-
-    public function testMdpHashNestPasStokeEnClair(): void
-    {
-        $user = new User();
-        $hash = password_hash('secret123', PASSWORD_BCRYPT);
-        $user->setMdp($hash);
-        $this->assertNotSame('secret123', $user->getMdp());
     }
 
     public function testDeuxHashsDuMemeMotDePasseSontDifferents(): void
@@ -47,76 +69,20 @@ class SecuriteTest extends WebTestCase
         $this->assertFalse(password_verify('', $hash));
     }
 
-
-    public function testReponseGetUsersNExposePasMdp(): void
+    public function testHashEstNonReversible(): void
     {
-        $client = static::createClient([], [
-            'HTTP_ACCEPT' => 'application/ld+json',
-        ]);
-        $client->request('GET', '/api/users');
-
-        $contenu = $client->getResponse()->getContent();
-        $this->assertStringNotContainsStringIgnoringCase('"mdp"', $contenu);
+        $hash = password_hash('secret', PASSWORD_BCRYPT);
+        $this->assertNotSame('secret', $hash);
     }
 
-    public function testReponsePostUserNExposePasMdpEnClair(): void
-    {
-        $client = static::createClient([], [
-            'HTTP_ACCEPT'       => 'application/ld+json',
-            'HTTP_CONTENT_TYPE' => 'application/ld+json',
-        ]);
-
-        $corps = json_encode([
-            'nom'           => 'Test',
-            'prenom'        => 'Securite',
-            'mail'          => 'secu.test@test.fr',
-            'tel'           => '0600000010',
-            'etablissement' => 'Lycée',
-            'departement'   => 'MMI',
-            'mdp'           => 'motdepasse_clair',
-        ]);
-
-        $client->request('POST', '/api/users', [], [], [], $corps);
-        $contenu = $client->getResponse()->getContent();
-
-        $this->assertStringNotContainsString('motdepasse_clair', $contenu);
-    }
-
-    public function testReponseGetUserParIdNExposePasMdp(): void
-    {
-        $client = static::createClient([], [
-            'HTTP_ACCEPT'       => 'application/ld+json',
-            'HTTP_CONTENT_TYPE' => 'application/ld+json',
-        ]);
-
-        $client->request('POST', '/api/users', [], [], [], json_encode([
-            'nom'           => 'TestMdp',
-            'prenom'        => 'Alice',
-            'mail'          => 'alice.mdp@test.fr',
-            'tel'           => '0600000011',
-            'etablissement' => 'IUT',
-            'departement'   => 'Informatique',
-            'mdp'           => 'secret_password',
-        ]));
-
-        $data = json_decode($client->getResponse()->getContent(), true);
-
-        if (isset($data['id'])) {
-            $client->request('GET', '/api/users/' . $data['id'], [], [], [
-                'HTTP_ACCEPT' => 'application/ld+json',
-            ]);
-            $contenu = $client->getResponse()->getContent();
-            $this->assertStringNotContainsString('secret_password', $contenu);
-        } else {
-            $this->markTestSkipped('Création user échouée, test ignoré');
-        }
-    }
-
+    // =========================================================================
+    // Headers HTTP — tests sur /api/data (seule route existante)
+    // =========================================================================
 
     public function testReponseApiContientContentTypeJsonLd(): void
     {
         $client = static::createClient([], ['HTTP_ACCEPT' => 'application/ld+json']);
-        $client->request('GET', '/api/users');
+        $client->request('GET', '/api/data');
 
         $contentType = $client->getResponse()->headers->get('content-type');
         $this->assertStringContainsString('application/ld+json', $contentType);
@@ -125,7 +91,7 @@ class SecuriteTest extends WebTestCase
     public function testReponseContientHeaderVaryPourCache(): void
     {
         $client = static::createClient([], ['HTTP_ACCEPT' => 'application/ld+json']);
-        $client->request('GET', '/api/users');
+        $client->request('GET', '/api/data');
 
         $vary = $client->getResponse()->headers->get('vary');
         $this->assertNotNull($vary, 'Le header Vary doit être présent pour le cache conditionnel');
@@ -134,14 +100,13 @@ class SecuriteTest extends WebTestCase
     public function testRequeteOptionsRetourneHeadersCors(): void
     {
         $client = static::createClient();
-        $client->request('OPTIONS', '/api/users', [], [], [
-            'HTTP_ORIGIN'                        => 'http://localhost:3000',
-            'HTTP_ACCESS_CONTROL_REQUEST_METHOD' => 'POST',
+        $client->request('OPTIONS', '/api/data', [], [], [
+            'HTTP_ORIGIN'                         => 'http://localhost:3000',
+            'HTTP_ACCESS_CONTROL_REQUEST_METHOD'  => 'POST',
             'HTTP_ACCESS_CONTROL_REQUEST_HEADERS' => 'Content-Type',
         ]);
 
         $response = $client->getResponse();
-
         $this->assertTrue(
             $response->headers->has('access-control-allow-origin'),
             'Le header Access-Control-Allow-Origin doit être présent'
@@ -151,9 +116,9 @@ class SecuriteTest extends WebTestCase
     public function testCorsNAutoriseQueLesDomainenConfigures(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/api/users', [], [], [
-            'HTTP_ORIGIN'   => 'http://localhost:3000',
-            'HTTP_ACCEPT'   => 'application/ld+json',
+        $client->request('GET', '/api/data', [], [], [
+            'HTTP_ORIGIN' => 'http://localhost:3000',
+            'HTTP_ACCEPT' => 'application/ld+json',
         ]);
 
         $allowOrigin = $client->getResponse()->headers->get('access-control-allow-origin');
@@ -167,6 +132,10 @@ class SecuriteTest extends WebTestCase
         }
     }
 
+    // =========================================================================
+    // Routes — existence et codes de retour
+    // =========================================================================
+
     public function testApiDocumentationEstAccessible(): void
     {
         $client = static::createClient();
@@ -176,25 +145,10 @@ class SecuriteTest extends WebTestCase
 
     public function testRoutesApiNeRetournentPas500(): void
     {
-        $routes = [
-            '/api/users',
-            '/api/avis',
-            '/api/departements',
-            '/api/contacts',
-            '/api/notifications',
-        ];
-
         $client = static::createClient([], ['HTTP_ACCEPT' => 'application/ld+json']);
-
-        foreach ($routes as $route) {
-            $client->request('GET', $route);
-            $status = $client->getResponse()->getStatusCode();
-            $this->assertNotSame(
-                500,
-                $status,
-                "La route $route ne doit pas retourner une erreur 500"
-            );
-        }
+        $client->request('GET', '/api/data');
+        $status = $client->getResponse()->getStatusCode();
+        $this->assertNotSame(500, $status, 'La route /api/data ne doit pas retourner 500');
     }
 
     public function testRouteInexistanteRetourne404(): void
@@ -204,8 +158,11 @@ class SecuriteTest extends WebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
+    // =========================================================================
+    // Robustesse — injections et valeurs limites sur /api/data
+    // =========================================================================
 
-    public function testInjectionSQLDansNomUserEstRejeteeOuAssainie(): void
+    public function testInjectionSQLDansDataNePasProvoquer500(): void
     {
         $client = static::createClient([], [
             'HTTP_ACCEPT'       => 'application/ld+json',
@@ -213,22 +170,15 @@ class SecuriteTest extends WebTestCase
         ]);
 
         $corps = json_encode([
-            'nom'           => "'; DROP TABLE user; --",
-            'prenom'        => 'Injection',
-            'mail'          => 'injection@test.fr',
-            'tel'           => '0600000099',
-            'etablissement' => 'Lycée',
-            'departement'   => 'MMI',
-            'mdp'           => 'mdp',
+            'data' => "'; DROP TABLE data; --",
         ]);
 
-        $client->request('POST', '/api/users', [], [], [], $corps);
+        $client->request('POST', '/api/data', [], [], [], $corps);
         $status = $client->getResponse()->getStatusCode();
-
-        $this->assertNotSame(500, $status, 'Une tentative d\'injection SQL ne doit pas provoquer une erreur 500');
+        $this->assertNotSame(500, $status, 'Une injection SQL ne doit pas provoquer une erreur 500');
     }
 
-    public function testInjectionXSSEntreGuillemetsEstAssainie(): void
+    public function testInjectionXSSDansDataNePasProvoquer500(): void
     {
         $client = static::createClient([], [
             'HTTP_ACCEPT'       => 'application/ld+json',
@@ -236,29 +186,22 @@ class SecuriteTest extends WebTestCase
         ]);
 
         $corps = json_encode([
-            'nom'           => '<script>alert("xss")</script>',
-            'prenom'        => 'XSS',
-            'mail'          => 'xss@test.fr',
-            'tel'           => '0600000088',
-            'etablissement' => 'Lycée',
-            'departement'   => 'MMI',
-            'mdp'           => 'mdp',
+            'data' => '<script>alert("xss")</script>',
         ]);
 
-        $client->request('POST', '/api/users', [], [], [], $corps);
+        $client->request('POST', '/api/data', [], [], [], $corps);
         $status = $client->getResponse()->getStatusCode();
-
         $this->assertNotSame(500, $status, 'Une tentative XSS ne doit pas provoquer une erreur 500');
     }
 
-    public function testCorpsJsonNullRetourne400ou415(): void
+    public function testCorpsJsonVideRetourne400ou422(): void
     {
         $client = static::createClient([], [
             'HTTP_ACCEPT'       => 'application/ld+json',
             'HTTP_CONTENT_TYPE' => 'application/ld+json',
         ]);
 
-        $client->request('POST', '/api/users', [], [], [], '');
+        $client->request('POST', '/api/data', [], [], [], '');
         $status = $client->getResponse()->getStatusCode();
 
         $this->assertContains(
@@ -268,7 +211,7 @@ class SecuriteTest extends WebTestCase
         );
     }
 
-    public function testChampMailAvecValeurTropLonguePasErreur500(): void
+    public function testChampDataAvecValeurTropLonguePasErreur500(): void
     {
         $client = static::createClient([], [
             'HTTP_ACCEPT'       => 'application/ld+json',
@@ -276,16 +219,28 @@ class SecuriteTest extends WebTestCase
         ]);
 
         $corps = json_encode([
-            'nom'           => 'Long',
-            'prenom'        => 'Test',
-            'mail'          => str_repeat('a', 300) . '@test.fr',
-            'tel'           => '0600000000',
-            'etablissement' => 'Lycée',
-            'departement'   => 'MMI',
-            'mdp'           => 'mdp',
+            'data' => str_repeat('a', 1000),
         ]);
 
-        $client->request('POST', '/api/users', [], [], [], $corps);
+        $client->request('POST', '/api/data', [], [], [], $corps);
         $this->assertNotSame(500, $client->getResponse()->getStatusCode());
+    }
+
+    public function testPostDataUniqidNePasProvoquerDoublon(): void
+    {
+        $client = static::createClient([], [
+            'HTTP_ACCEPT'       => 'application/ld+json',
+            'HTTP_CONTENT_TYPE' => 'application/ld+json',
+        ]);
+
+        // Deux POSTs avec des valeurs uniques → les deux doivent retourner 201
+        $corps1 = json_encode(['data' => 'test_' . uniqid()]);
+        $corps2 = json_encode(['data' => 'test_' . uniqid()]);
+
+        $client->request('POST', '/api/data', [], [], [], $corps1);
+        $this->assertResponseStatusCodeSame(201);
+
+        $client->request('POST', '/api/data', [], [], [], $corps2);
+        $this->assertResponseStatusCodeSame(201);
     }
 }

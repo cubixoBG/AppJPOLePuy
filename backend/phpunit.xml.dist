@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    ✅ CORRECTIONS APPLIQUÉES :
-    Bug #3 : symfony/phpunit-bridge requis pour SymfonyExtension
-             (nécessite : composer require --dev symfony/phpunit-bridge)
-    Bug #4 : Suppression des 3 blocs testsuite pointant vers des fichiers
-             inexistants (UtilisateurCrudTest, UtilisateurMetierTest,
-             UtilisateurSecuriteTest)
-    Bootstrap supprimé : PHPUnit utilise vendor/autoload.php par défaut
+    ✅ CORRECTIONS v3 :
+    - Bloc <extensions> (SymfonyExtension) supprimé :
+        symfony/phpunit-bridge n'est PAS dans require-dev → plantait au démarrage
+    - Aucun bootstrap déclaré : PHPUnit charge vendor/autoload.php par défaut
+
+    ⚠️  Avant de lancer les tests, installer les dépendances de test :
+        composer require --dev phpunit/phpunit symfony/test-pack
+    Puis initialiser la BDD de test :
+        php bin/console doctrine:database:create --env=test
+        php bin/console doctrine:migrations:migrate --env=test --no-interaction
 -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
@@ -25,6 +28,15 @@
         <testsuite name="all">
             <directory>tests</directory>
         </testsuite>
+        <testsuite name="unit">
+            <directory>tests/Business</directory>
+        </testsuite>
+        <testsuite name="api">
+            <directory>tests/Api</directory>
+        </testsuite>
+        <testsuite name="security">
+            <directory>tests/Security</directory>
+        </testsuite>
     </testsuites>
 
     <coverage includeUncoveredFiles="true">
@@ -35,9 +47,5 @@
             <file>src/Kernel.php</file>
         </exclude>
     </coverage>
-
-    <extensions>
-        <bootstrap class="Symfony\Bridge\PhpUnit\SymfonyExtension" />
-    </extensions>
 
 </phpunit>
