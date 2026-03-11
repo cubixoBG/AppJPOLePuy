@@ -87,14 +87,14 @@ class ReglesMetiersTest extends TestCase
     {
         $user = $this->creerUserValide();
         $user->setType('visiteur');
-        $this->assertContains($user->getType(), ['visiteur', 'ambassadeur', null]);
+        $this->assertContains($user->getType(), ['visiteur', 'ambassadeur']);
     }
 
     public function testUserTypeAmbassadeurEstAccepte(): void
     {
         $user = $this->creerUserValide();
         $user->setType('ambassadeur');
-        $this->assertContains($user->getType(), ['visiteur', 'ambassadeur', null]);
+        $this->assertContains($user->getType(), ['visiteur', 'ambassadeur']);
     }
 
     public function testUserTypeNullEstAccepte(): void
@@ -141,6 +141,7 @@ class ReglesMetiersTest extends TestCase
         $this->assertIsInt($avis->getNote());
     }
 
+    #[DataProvider('fournirNotesValides')]
     public function testAvisNotesDansLaPlageValide(int $note): void
     {
         $avis = new Avis();
