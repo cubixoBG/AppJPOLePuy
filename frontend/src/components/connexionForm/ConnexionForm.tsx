@@ -1,10 +1,12 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import styles from "./styles.module.scss";
 
 export default function ConnexionForm({ onSuccess }) {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const [response, setResponse] = useState([]);
 
     const checkEmail = async (e) => {
         e.preventDefault();
@@ -12,6 +14,7 @@ export default function ConnexionForm({ onSuccess }) {
 
         setTimeout(() => {
             const emailExists = true;
+
             if (emailExists) {
                 onSuccess();
             } else {
@@ -20,6 +23,18 @@ export default function ConnexionForm({ onSuccess }) {
             setLoading(false);
         }, 1000);
     };
+
+    function searchEmail() {
+        useEffect(() => {
+            fetch('/api/proxy/getUserByEmail') // <= configurer les appels api dans le proxy
+                .then(res => res.json())
+                .then(data => {
+                    setResponse(data);
+                    
+                })
+                .catch(err => console.error("Erreur fetch :", err));},
+        []);
+    }
 
     return (
         <section className={styles.formulaire}>
