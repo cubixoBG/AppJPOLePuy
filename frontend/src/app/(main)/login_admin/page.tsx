@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from "./styles.module.scss";
 import ButtonFull from "@components/buttonFull/ButtonFull";
 
-export default function ConnexionAdmin() {
+export default function Login_Admin() {
     const [password, setPassword] = useState("");
 
     const handleConnexion = () => {
