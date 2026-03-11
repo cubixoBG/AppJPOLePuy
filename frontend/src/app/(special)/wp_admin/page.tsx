@@ -17,23 +17,23 @@ export default async function AdminPage({ searchParams }: { searchParams: { auth
     });
 
     const data = await response.json();
-    
+
     const users = data.member || [];
 
-    const totalVisiteurs = users.filter((u: any) => 
-        u.type !== "Admin" &&  u.type !== "Presentateur" && u.type !== "Presentateur"
+    const totalVisiteurs = users.filter((u: any) =>
+        u.type !== "Admin" && u.type !== "Presentateur" && u.type !== "Presentateur"
     ).length;
 
-    const mmiCount = users.filter((u: any) => 
-        u.type !== "Admin" &&  u.type !== "Presentateur" && u.departement === "MMI"
+    const mmiCount = users.filter((u: any) =>
+        u.type !== "Admin" && u.type !== "Presentateur" && u.departement === "MMI"
     ).length;
 
-    const infoCount = users.filter((u: any) => 
-        u.type !== "Admin" &&  u.type !== "Presentateur" && u.departement === "Informatique"
+    const infoCount = users.filter((u: any) =>
+        u.type !== "Admin" && u.type !== "Presentateur" && u.departement === "Informatique"
     ).length;
 
-    const chimieCount = users.filter((u: any) => 
-        u.type !== "Admin" &&  u.type !== "Presentateur" && u.departement === "Chimie"
+    const chimieCount = users.filter((u: any) =>
+        u.type !== "Admin" && u.type !== "Presentateur" && u.departement === "Chimie"
     ).length;
 
     return (
@@ -87,10 +87,15 @@ export default async function AdminPage({ searchParams }: { searchParams: { auth
                 <section className={styles.dashboard_stats}>
                     <article className={styles.dashboard_stats_dep}>
                         <h3>Inscriptions par département</h3>
-
+                        <div>
+                            <canvas id="dep"></canvas>
+                        </div>
                     </article>
                     <article className={styles.dashboard_stats_etab}>
                         <h3>Répartitions par établissement</h3>
+                        <div>
+                            <canvas id="etab"></canvas>
+                        </div>
                     </article>
                 </section>
 
