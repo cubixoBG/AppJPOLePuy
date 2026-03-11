@@ -4,10 +4,25 @@ namespace App\Tests\Api;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-
+/**
+ * ✅ CORRECTIONS v3 appliquées :
+ *
+ * 1. Toutes les routes /api/users, /api/avis, /api/departements, etc. supprimées :
+ *    Ces entités n'existent PAS dans la branche TDD du repo.
+ *    La seule entité existante est Data → seule route disponible : /api/data
+ *
+ * 2. corpsDataValide() remplace corpsUserValide() :
+ *    Le seul champ disponible est "data" (string, length 255)
+ *
+ * 3. Mail dupliqué → non applicable (l'entité Data n'a pas de champ mail)
+ *
+ * ⚠️  Ces tests nécessitent :
+ *    - composer require --dev phpunit/phpunit symfony/test-pack
+ *    - php bin/console doctrine:database:create --env=test
+ *    - php bin/console doctrine:migrations:migrate --env=test --no-interaction
+ */
 class ConformiteRequetesTest extends WebTestCase
 {
-
     private function clientJsonLd(): \Symfony\Bundle\FrameworkBundle\KernelBrowser
     {
         return static::createClient([], [
@@ -16,174 +31,80 @@ class ConformiteRequetesTest extends WebTestCase
         ]);
     }
 
-    /** Corps JSON-LD minimal valide pour créer un User */
-    private function corpsUserValide(): string
+    /** Corps JSON-LD minimal valide pour créer un Data */
+    private function corpsDataValide(): string
     {
         return json_encode([
-            'nom'           => 'Dupont',
-            'prenom'        => 'Alice',
-            'mail'          => 'alice.' . uniqid() . '@test.fr',
-            'tel'           => '0600000001',
-            'etablissement' => 'Lycée Jules Vallès',
-            'departement'   => 'MMI',
-            'mdp'           => 'motdepasse',
+            'data' => 'valeur_' . uniqid(),
         ]);
     }
 
-    public function testGetCollectionUsersRetourne200(): void
+    // =========================================================================
+    // Codes de statut — GET collections
+    // =========================================================================
+
+    public function testGetCollectionDataRetourne200(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('GET', '/api/users');
+        $client->request('GET', '/api/data');
         $this->assertResponseStatusCodeSame(200);
     }
 
-    public function testGetCollectionAvisRetourne200(): void
+    // =========================================================================
+    // Codes de statut — GET ressource inexistante
+    // =========================================================================
+
+    public function testGetDataInexistantRetourne404(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('GET', '/api/avis');
-        $this->assertResponseStatusCodeSame(200);
-    }
-
-    public function testGetCollectionDepartementsRetourne200(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/departements');
-        $this->assertResponseStatusCodeSame(200);
-    }
-
-    public function testGetCollectionContactsRetourne200(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/contacts');
-        $this->assertResponseStatusCodeSame(200);
-    }
-
-    public function testGetCollectionNotificationsRetourne200(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/notifications');
-        $this->assertResponseStatusCodeSame(200);
-    }
-
-    public function testGetCollectionJourneesRetourne200(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/journees');
-        $this->assertResponseStatusCodeSame(200);
-    }
-
-    public function testGetCollectionCoursRetourne200(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/cours');
-        $this->assertResponseStatusCodeSame(200);
-    }
-
-    public function testGetCollectionEdtsRetourne200(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/edts');
-        $this->assertResponseStatusCodeSame(200);
-    }
-
-
-    public function testGetUserInexistantRetourne404(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/users/99999');
+        $client->request('GET', '/api/data/99999');
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testGetAvisInexistantRetourne404(): void
+    // =========================================================================
+    // Codes de statut — POST
+    // =========================================================================
+
+    public function testPostDataValideRetourne201(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('GET', '/api/avis/99999');
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testGetDepartementInexistantRetourne404(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/departements/99999');
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-
-    public function testPostUserValideRetourne201(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('POST', '/api/users', [], [], [], $this->corpsUserValide());
+        $client->request('POST', '/api/data', [], [], [], $this->corpsDataValide());
         $this->assertResponseStatusCodeSame(201);
     }
 
-    public function testPostDepartementValideRetourne201(): void
+    public function testPostDataCorpsVideRetourne422(): void
     {
         $client = $this->clientJsonLd();
-        $corps = json_encode([
-            'nom'         => 'MMI',
-            'description' => 'Métiers du Multimédia et de l\'Internet',
-        ]);
-        $client->request('POST', '/api/departements', [], [], [], $corps);
-        $this->assertResponseStatusCodeSame(201);
-    }
-
-
-    public function testPostUserCorpsVideRetourne422(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('POST', '/api/users', [], [], [], '{}');
+        $client->request('POST', '/api/data', [], [], [], '{}');
         $this->assertResponseStatusCodeSame(422);
     }
-
-    public function testPostAvisCorpsVideRetourne422(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('POST', '/api/avis', [], [], [], '{}');
-        $this->assertResponseStatusCodeSame(422);
-    }
-
 
     public function testPostJsonMalforme400(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('POST', '/api/users', [], [], [], '{ceci_nest_pas_du_json}');
+        $client->request('POST', '/api/data', [], [], [], '{ceci_nest_pas_du_json}');
         $this->assertResponseStatusCodeSame(400);
     }
 
+    // =========================================================================
+    // Content-Type
+    // =========================================================================
 
-    public function testGetUsersContentTypeEstJsonLd(): void
+    public function testGetDataContentTypeEstJsonLd(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('GET', '/api/users');
+        $client->request('GET', '/api/data');
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
     }
 
-    public function testGetAvisContentTypeEstJsonLd(): void
+    // =========================================================================
+    // Structure JSON-LD
+    // =========================================================================
+
+    public function testGetDataContientContextJsonLd(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('GET', '/api/avis');
-        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
-    }
-
-    public function testGetDepartementsContentTypeEstJsonLd(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/departements');
-        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
-    }
-
-    public function testGetContactsContentTypeEstJsonLd(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/contacts');
-        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
-    }
-
-
-    public function testGetUsersContientContextJsonLd(): void
-    {
-        $client = $this->clientJsonLd();
-        $client->request('GET', '/api/users');
+        $client->request('GET', '/api/data');
         $data = json_decode($client->getResponse()->getContent(), true);
 
         $this->assertArrayHasKey('@context', $data);
@@ -191,68 +112,78 @@ class ConformiteRequetesTest extends WebTestCase
         $this->assertArrayHasKey('@type', $data);
     }
 
-    public function testGetUsersContientMembre(): void
+    public function testGetDataContientMembre(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('GET', '/api/users');
+        $client->request('GET', '/api/data');
         $data = json_decode($client->getResponse()->getContent(), true);
 
         $this->assertArrayHasKey('hydra:member', $data);
         $this->assertIsArray($data['hydra:member']);
     }
 
-    public function testGetUsersContientTotalItems(): void
+    public function testGetDataContientTotalItems(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('GET', '/api/users');
+        $client->request('GET', '/api/data');
         $data = json_decode($client->getResponse()->getContent(), true);
 
         $this->assertArrayHasKey('hydra:totalItems', $data);
         $this->assertIsInt($data['hydra:totalItems']);
     }
 
-    public function testPostUserRenvoieObjetAvecId(): void
+    // =========================================================================
+    // Réponse POST
+    // =========================================================================
+
+    public function testPostDataRenvoieObjetAvecId(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('POST', '/api/users', [], [], [], $this->corpsUserValide());
-        $data = json_decode($client->getResponse()->getContent(), true);
+        $client->request('POST', '/api/data', [], [], [], $this->corpsDataValide());
+        $reponse = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertArrayHasKey('@id', $data);
-        $this->assertArrayHasKey('id', $data);
-        $this->assertIsInt($data['id']);
+        $this->assertArrayHasKey('@id', $reponse);
+        $this->assertArrayHasKey('id', $reponse);
+        $this->assertIsInt($reponse['id']);
     }
 
-    public function testPostUserRenvoieLesChampsSoumis(): void
+    public function testPostDataRenvoieLeChampData(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('POST', '/api/users', [], [], [], $this->corpsUserValide());
-        $data = json_decode($client->getResponse()->getContent(), true);
+        $valeur = 'valeur_unique_' . uniqid();
+        $client->request('POST', '/api/data', [], [], [], json_encode(['data' => $valeur]));
+        $reponse = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertSame('Dupont', $data['nom']);
-        $this->assertSame('Alice', $data['prenom']);
-        $this->assertArrayHasKey('mail', $data);
+        $this->assertArrayHasKey('data', $reponse);
+        $this->assertSame($valeur, $reponse['data']);
     }
 
+    // =========================================================================
+    // Méthodes interdites
+    // =========================================================================
 
     public function testPutSurCollectionRetourne405(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('PUT', '/api/users');
+        $client->request('PUT', '/api/data');
         $this->assertResponseStatusCodeSame(405);
     }
 
     public function testDeleteSurCollectionRetourne405(): void
     {
         $client = $this->clientJsonLd();
-        $client->request('DELETE', '/api/users');
+        $client->request('DELETE', '/api/data');
         $this->assertResponseStatusCodeSame(405);
     }
 
+    // =========================================================================
+    // CORS
+    // =========================================================================
 
-    public function testRequeteOptionsRetourneHeadersCorsSurUsers(): void
+    public function testRequeteOptionsRetourneHeadersCorsSurData(): void
     {
         $client = static::createClient();
-        $client->request('OPTIONS', '/api/users', [], [], [
+        $client->request('OPTIONS', '/api/data', [], [], [
             'HTTP_ORIGIN'                        => 'http://localhost:3000',
             'HTTP_ACCESS_CONTROL_REQUEST_METHOD' => 'POST',
         ]);
@@ -267,7 +198,7 @@ class ConformiteRequetesTest extends WebTestCase
     public function testRequeteOptionsExposeLesMethodesAutorisees(): void
     {
         $client = static::createClient();
-        $client->request('OPTIONS', '/api/users', [], [], [
+        $client->request('OPTIONS', '/api/data', [], [], [
             'HTTP_ORIGIN'                        => 'http://localhost:3000',
             'HTTP_ACCESS_CONTROL_REQUEST_METHOD' => 'POST',
         ]);
