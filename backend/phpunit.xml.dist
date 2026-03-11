@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     ✅ CORRECTIONS APPLIQUÉES :
-    Bug #1 : bootstrap.php désormais présent dans tests/
     Bug #3 : symfony/phpunit-bridge requis pour SymfonyExtension
              (nécessite : composer require --dev symfony/phpunit-bridge)
     Bug #4 : Suppression des 3 blocs testsuite pointant vers des fichiers
              inexistants (UtilisateurCrudTest, UtilisateurMetierTest,
              UtilisateurSecuriteTest)
+    Bootstrap supprimé : PHPUnit utilise vendor/autoload.php par défaut
 -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="tests/bootstrap.php"
          defaultTestSuite="all"
 >
     <php>
