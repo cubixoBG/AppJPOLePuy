@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    ✅ CORRECTIONS v3 :
-    - Bloc <extensions> (SymfonyExtension) supprimé :
-        symfony/phpunit-bridge n'est PAS dans require-dev → plantait au démarrage
-    - Aucun bootstrap déclaré : PHPUnit charge vendor/autoload.php par défaut
-
-    ⚠️  Avant de lancer les tests, installer les dépendances de test :
-        composer require --dev phpunit/phpunit symfony/test-pack
-    Puis initialiser la BDD de test :
-        php bin/console doctrine:database:create --env=test
-        php bin/console doctrine:migrations:migrate --env=test --no-interaction
--->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          backupGlobals="false"
