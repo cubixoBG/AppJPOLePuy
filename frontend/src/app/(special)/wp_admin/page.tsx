@@ -1,12 +1,14 @@
 import styles from "./page.module.scss";
 import Footer from "@components/footer/Footer";
 import ButtonFull from "@components/buttonFull/ButtonFull";
+import GraphiqueBarre from "@components/graphiqueBarre/BarChart"
+import GraphiqueCercle from "@components/graphiqueCercle/CercleChart"
+import VisiteursTable from "@components/visiteursTable/VisiteursTable"
 
 export default async function AdminPage({ searchParams }: { searchParams: { auth?: string } }) {
     const authStatus = searchParams?.auth;
     const isAuthenticated = authStatus === "success";
 
-    // 1. Récupération des données depuis l'API
     const response = await fetch("http://webserver:80/api/users", {
         method: 'GET',
         headers: {
@@ -35,6 +37,10 @@ export default async function AdminPage({ searchParams }: { searchParams: { auth
     const chimieCount = users.filter((u: any) =>
         u.type !== "Admin" && u.type !== "Presentateur" && u.departement === "Chimie"
     ).length;
+
+    const visiteurs = users.filter((u: any) =>
+        u.type !== "Admin" && u.type !== "Presentateur"
+    );
 
     return (
         <main className={styles.admin} key={authStatus}>
@@ -88,24 +94,18 @@ export default async function AdminPage({ searchParams }: { searchParams: { auth
                     <article className={styles.dashboard_stats_dep}>
                         <h3>Inscriptions par département</h3>
                         <div>
-                            <canvas id="dep"></canvas>
+                            <GraphiqueBarre />
                         </div>
                     </article>
                     <article className={styles.dashboard_stats_etab}>
                         <h3>Répartitions par établissement</h3>
                         <div>
-                            <canvas id="etab"></canvas>
+                            <GraphiqueCercle />
                         </div>
                     </article>
                 </section>
 
-                <section className={styles.dashboard_visiteurs}>
-                    <div className={styles.dashboard_visiteurs_header}>
-                        <h3>Liste des visiteurs</h3>
-                        <div className={styles.filtresVisiteurs}>
-                        </div>
-                    </div>
-                </section>
+                <VisiteursTable visiteurs={visiteurs} />
             </div>
             <Footer />
         </main>

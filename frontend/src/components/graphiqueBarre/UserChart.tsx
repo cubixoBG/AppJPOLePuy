@@ -1,12 +1,18 @@
+'use client'
 import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
-export default function BarChart() {
+interface Props {
+  mmiCount: number;
+  infoCount: number;
+  chimieCount: number;
+}
+
+export default function UserChart({ mmiCount, infoCount, chimieCount }: Props) {
   const chartRef = useRef(null);
-  const chartInstanceRef = useRef(null);
+  const chartInstanceRef = useRef<Chart | null>(null);
 
   useEffect(() => {
-    // Détruire l'instance précédente si elle existe
     if (chartInstanceRef.current) {
       chartInstanceRef.current.destroy();
     }
@@ -17,30 +23,23 @@ export default function BarChart() {
       type: "bar",
       data: {
         labels: ["MMI", "Informatique", "Chimie"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            borderWidth: 1,
-          },
-        ],
+        datasets: [{
+          label: "Nombre d'étudiants",
+          data: [mmiCount, infoCount, chimieCount],
+          borderWidth: 1,
+        }],
       },
       options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
+        scales: { y: { beginAtZero: true } },
       },
     });
 
-    // Cleanup au démontage du composant
     return () => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
       }
     };
-  }, []);
+  }, [mmiCount, infoCount, chimieCount]); // ✅ dépendances ajoutées
 
   return <canvas ref={chartRef} />;
 }
