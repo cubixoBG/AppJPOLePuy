@@ -1,7 +1,6 @@
 doctrine:
     dbal:
-        options:
-            1002: "SET NAMES 'UTF8'"  # MySQL spécifique, sinon adapter selon ton SGBD
+        charset: utf8mb4
         url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,

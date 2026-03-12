@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\DepartementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DepartementRepository::class)]
@@ -26,6 +28,17 @@ class Departement
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom_responsable = null;
+
+    /**
+     * @var Collection<int, Indice>
+     */
+    #[ORM\OneToMany(targetEntity: Indice::class, mappedBy: 'departement', orphanRemoval: true)]
+    private Collection $indices;
+
+    public function __construct()
+    {
+        $this->indices = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +89,36 @@ class Departement
     public function setNomResponsable(?string $nom_responsable): static
     {
         $this->nom_responsable = $nom_responsable;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Indice>
+     */
+    public function getIndices(): Collection
+    {
+        return $this->indices;
+    }
+
+    public function addIndex(Indice $index): static
+    {
+        if (!$this->indices->contains($index)) {
+            $this->indices->add($index);
+            $index->setDepartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIndex(Indice $index): static
+    {
+        if ($this->indices->removeElement($index)) {
+            // set the owning side to null (unless already changed)
+            if ($index->getDepartement() === $this) {
+                $index->setDepartement(null);
+            }
+        }
 
         return $this;
     }
