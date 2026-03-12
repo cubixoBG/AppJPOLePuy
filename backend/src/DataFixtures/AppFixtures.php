@@ -6,6 +6,7 @@ use App\Story\DefaultAvisStory;
 use App\Story\DefaultCourStory;
 use App\Story\DefaultDepartementStory;
 use App\Story\DefaultEdtStory;
+use App\Story\DefaultIndiceStory;
 use App\Story\DefaultJourneeStory;
 use App\Story\DefaultNotificationStory;
 use App\Story\DefaultUserStory;
@@ -20,6 +21,7 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
+        DefaultDepartementStory::load();
         DefaultContactStory::load();
         DefaultUserStory::load();
         DefaultCourStory::load();
@@ -27,6 +29,6 @@ class AppFixtures extends Fixture
         DefaultJourneeStory::load();
         DefaultAvisStory::load();
         DefaultNotificationStory::load();
-        DefaultDepartementStory::load();
+        DefaultIndiceStory::load();
     }
 }

@@ -35,6 +35,9 @@ class Departement
     #[ORM\OneToMany(targetEntity: Indice::class, mappedBy: 'departement', orphanRemoval: true)]
     private Collection $indices;
 
+    #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'departement', orphanRemoval: true)]
+    private Collection $contacts;
+
     public function __construct()
     {
         $this->indices = new ArrayCollection();
@@ -117,6 +120,36 @@ class Departement
             // set the owning side to null (unless already changed)
             if ($index->getDepartement() === $this) {
                 $index->setDepartement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): static
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts->add($contact);
+            $contact->setDepartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): static
+    {
+        if ($this->contacts->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getDepartement() === $this) {
+                $contact->setDepartement(null);
             }
         }
 
