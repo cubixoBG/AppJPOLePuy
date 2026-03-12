@@ -2,13 +2,13 @@
 
 namespace App\Factory;
 
-use App\Entity\Contact;
+use App\Entity\Indice;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Contact>
+ * @extends PersistentProxyObjectFactory<Indice>
  */
-final class ContactFactory extends PersistentProxyObjectFactory
+final class IndiceFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -22,7 +22,7 @@ final class ContactFactory extends PersistentProxyObjectFactory
     #[\Override]
     public static function class(): string
     {
-        return Contact::class;
+        return Indice::class;
     }
 
     /**
@@ -34,13 +34,8 @@ final class ContactFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'nom' => self::faker()->name(),
-            'prenom' => self::faker()->firstName(),
-            'domaine' => self::faker()->randomElement(['Développement web', '3d', 'Communication', 'DevOps']),
-            'image' => self::faker()->imageUrl(),
-            'mail' => self::faker()->email(),
-            'type' => self::faker()->randomElement(['prof', 'étudiant']),
             'departement' => DepartementFactory::random(),
+            'texte' => self::faker()->text(100),
         ];
     }
 
@@ -51,7 +46,7 @@ final class ContactFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Contact $contact): void {})
+            // ->afterInstantiate(function(Indice $indice): void {})
         ;
     }
 }

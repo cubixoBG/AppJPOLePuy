@@ -11,7 +11,7 @@ export default function ConnexionForm({ onSuccess }) {
         setLoading(true);
 
         setTimeout(() => {
-            const emailExists = true; 
+            const emailExists = true;
             if (emailExists) {
                 onSuccess();
             } else {
@@ -24,17 +24,21 @@ export default function ConnexionForm({ onSuccess }) {
     return (
         <section className={styles.formulaire}>
             <div className={styles.formulaire_container}>
-                <h2>Connexion</h2>
+                <div className={styles.formulaire_container_header}>
+                    <img src="/letter.webp" alt="icon" />
+                    <h2>Connexion</h2>
+                    <p>Entrez votre adresse email pour vous connecter</p>
+                </div>
                 <form onSubmit={checkEmail}>
-                    <input 
-                        type="email" 
+                    <input
+                        type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="votre.email@exemple.fr" 
-                        required 
+                        placeholder="votre.email@exemple.fr"
+                        required
                     />
                     <button type="submit" disabled={loading}>
-                        {loading ? 'Vérification...' : 'Continuer ➔'}
+                        <p>{loading ? 'Vérification...' : 'Continuer ➔'}</p>
                     </button>
                 </form>
             </div>
