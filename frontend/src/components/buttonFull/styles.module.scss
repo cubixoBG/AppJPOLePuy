@@ -1,0 +1,17 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.button {
+    @include mixins.boutonFull(variables.$tertiary);
+    height: 50px;
+
+    &[data-color="2"] {
+        background-color: variables.$secondary;
+    }
+
+    &:hover {
+        margin: 0 0 0 2%;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+}

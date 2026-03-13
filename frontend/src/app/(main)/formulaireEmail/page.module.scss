@@ -1,0 +1,43 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.formulaire {
+    @include mixins.flexcenter;
+    width: 100%;
+    height: 80vh;
+
+    &_container {
+        @include mixins.formContainer;
+
+        &_header {
+            margin-bottom: 9%;
+
+            h2 {
+                margin: 3% 0;
+            }
+
+            img {
+                background-color: rgba($color: variables.$secondary, $alpha: 0.1);
+                border-radius: 100px;
+                padding: 3% 3%;
+            }
+        }
+
+        form {
+            @include mixins.form;
+
+            div {
+                display: flex;
+                flex-direction: column;
+            }
+
+            input {
+                @include mixins.formInput;
+            }
+
+            button {
+                background-color: variables.$secondary;
+            }
+        }
+    }
+}

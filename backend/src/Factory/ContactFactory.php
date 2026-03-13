@@ -40,6 +40,7 @@ final class ContactFactory extends PersistentProxyObjectFactory
             'image' => self::faker()->imageUrl(),
             'mail' => self::faker()->email(),
             'type' => self::faker()->randomElement(['prof', 'étudiant']),
+            'departement' => DepartementFactory::random(),
         ];
     }
 

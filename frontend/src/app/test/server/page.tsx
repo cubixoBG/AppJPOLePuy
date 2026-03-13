@@ -16,9 +16,11 @@ export default async function Page() {
 
     const deps = data.members;
 
+    // console.log(data)
+
     return (
         <div>
-            {deps.map((d : any) => <li key={d.id}>{d.logo} {d.nom} {d.description} {d.responsable}</li>)}
+            {/* {deps.map((d : any) => <li key={d.id}>{d.logo} {d.nom} {d.description} {d.responsable}</li>)} */}
         </div>
     )
 }

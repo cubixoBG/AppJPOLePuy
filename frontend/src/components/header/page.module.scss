@@ -1,0 +1,60 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.header {
+    z-index: 1000;
+    position: relative;
+    height: 8vh;
+    width: 100%;
+    background-color: variables.$primary;
+    @include mixins.flexcenter;
+    justify-content: space-between;
+    padding: 0 12%;
+    box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.2);
+
+    &_Logo {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.3s;
+
+            &:hover {
+                margin-left: 2%;
+                transition: all 0.3s;
+            }
+        }
+    }
+
+    &_Nav {
+        color: variables.$white;
+
+        ul {
+            display: flex;
+            list-style: none;
+            gap: 4em;
+
+            li {
+                height: 100%;
+                width: 100px;
+                white-space: nowrap;
+
+                a {
+                    border: solid rgba($color: variables.$white, $alpha: 0.3) 3px;
+                    border-radius: 16px;
+                    padding: 10% 20%;
+                    transition: all 0.3s;
+
+                    &:hover {
+                        border: solid rgba($color: variables.$white, $alpha: 1.0) 3px;
+                        transition: all 0.3s;
+                    }
+                }
+            }
+        }
+    }
+}
