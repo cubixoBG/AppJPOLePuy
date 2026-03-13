@@ -9,14 +9,11 @@ class NotificationEmailTest extends WebTestCase
 {
     use MailerAssertionsTrait;
 
-    private const API_KEY = 'WsFsi9zSPGKIN7aKiOuNgqtiqjuUuIywX-whmThTZLRcND_M';
-
     private function headers(): array
     {
         return [
-            'CONTENT_TYPE'    => 'application/json',
-            'HTTP_ACCEPT'     => 'application/json',
-            'HTTP_X_API_KEY'  => self::API_KEY,
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT'  => 'application/json',
         ];
     }
 
@@ -43,7 +40,7 @@ class NotificationEmailTest extends WebTestCase
         $this->assertEmailCount(1);
     }
 
-    public function testEnvoiNotificationEmailDestinaireExiste(): void
+    public function testEnvoiNotificationEmailDestinataireAdresseValide(): void
     {
         $client = static::createClient();
         $client->request('POST', '/api/notifications/send', [], [], $this->headers(), $this->payload());
@@ -52,7 +49,7 @@ class NotificationEmailTest extends WebTestCase
         $to = $email->getTo();
         $this->assertNotEmpty($to);
         $this->assertMatchesRegularExpression(
-            '/^[^@]+@[^@]+\.[^@]+$/',
+            '/^[^@\s]+@[^@\s]+\.[^@\s]+$/',
             $to[0]->getAddress()
         );
     }
@@ -61,9 +58,9 @@ class NotificationEmailTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request('POST', '/api/notifications/send', [], [], $this->headers(), $this->payload([
-            'nom' => 'Martin',
+            'nom'    => 'Martin',
             'prenom' => 'Alice',
-            'mail' => 'alice.martin@example.com',
+            'mail'   => 'alice.martin@example.com',
         ]));
 
         $email = $this->getMailerMessage();
