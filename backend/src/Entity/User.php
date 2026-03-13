@@ -48,6 +48,9 @@ class User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $statutEtu = null;
 
+    #[ORM\Column(length: 20)]
+    private string $statut = 'disponible';
+
     #[ORM\ManyToOne(inversedBy: 'id_user')]
     private ?Journee $id_journee = null;
 
@@ -183,6 +186,21 @@ class User
     public function setStatutEtu(?string $statutEtu): static
     {
         $this->statutEtu = $statutEtu;
+
+        return $this;
+    }
+
+    public function getStatut(): string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): static
+    {
+        if (!in_array($statut, ['disponible', 'indisponible'], true)) {
+            throw new \InvalidArgumentException('Statut invalide : ' . $statut);
+        }
+        $this->statut = $statut;
 
         return $this;
     }
