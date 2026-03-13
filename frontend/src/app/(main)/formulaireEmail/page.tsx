@@ -22,7 +22,6 @@ export default function formulaireEmail() {
             .catch(err => console.error("Erreur fetch :", err));
             setEmail("");
         }
-    };
 
     return (
         <main>
