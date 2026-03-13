@@ -1,8 +1,28 @@
+"use client"
+
 import styles from "./page.module.scss";
 import ButtonFull from "@components/buttonFull/ButtonFull";
 import Footer from "@components/footer/Footer";
+import { useState, useEffect } from "react";
 
 export default function formulaireEmail() {
+
+    const [email, setEmail] = useState([]);
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+
+        // email
+
+        fetch('/api/proxy/getUsers')
+            .then(res => res.json())
+            .then(data => {
+                setEmail(data.member);
+            })
+            .catch(err => console.error("Erreur fetch :", err));
+            setEmail("");
+        }
+    };
 
     return (
         <main>

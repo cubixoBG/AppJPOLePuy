@@ -55,7 +55,7 @@ export default function Home() {
                 sein de l'IUT (cours, visite, échanges).</p>
             </div>
             <div className={styles.datesImmersion_container_right}>
-              <ButtonTransparent texte="Réserver une date ➔" lien="" />
+              <ButtonTransparent texte="Réserver une date ➔" lien="./formulaireEmail" />
             </div>
           </div>
         </section>
