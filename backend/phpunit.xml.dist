@@ -25,6 +25,9 @@
         <testsuite name="security">
             <directory>tests/Security</directory>
         </testsuite>
+        <testsuite name="notification">
+            <directory>tests/Notification</directory>
+        </testsuite>
     </testsuites>
 
     <coverage includeUncoveredFiles="true">
