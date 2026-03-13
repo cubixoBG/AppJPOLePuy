@@ -16,7 +16,7 @@ export default async function Page() {
 
     const deps = data.members;
 
-    console.log(data)
+    // console.log(data)
 
     return (
         <div>
