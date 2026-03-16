@@ -7,7 +7,7 @@ export default function Header({type = 1}) {
         navContent = (
             <ul>
                 <li><a href="#">Présentateur</a></li>
-                <li><a href="#">Admin</a></li>
+                <li><a href="/wp_admin">Admin</a></li>
             </ul>
         );
     } else {
