@@ -1,3 +1,22 @@
 @use "@styles/variables";
 @use "@styles/mixins";
 
+.choixDateImmersion {
+    @include mixins.flexcenter;
+    margin: 3% 0;
+
+    &_header {
+        color: variables.$text;
+
+        span {
+            padding: 2% 4%;
+            border-radius: 21px;
+            color: variables.$secondary;
+            background-color: rgba($color: variables.$secondary, $alpha: 0.1);
+        }
+
+        h2 {
+            margin: 1% 0;
+        }
+    }
+}

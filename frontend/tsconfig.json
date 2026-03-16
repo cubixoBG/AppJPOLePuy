@@ -22,6 +22,7 @@
       "@/": ["./src/*"],
       "@styles/*": ["./src/styles/*"],
       "@components/*": ["./src/components/*"],
+      "@src/*": ["./src/*"],
     }
   },
   "include": [

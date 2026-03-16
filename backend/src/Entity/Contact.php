@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ContactRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
@@ -32,6 +34,10 @@ class Contact
 
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
+
+    #[ORM\ManyToOne(inversedBy: 'contacts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Departement $departement = null;
 
     public function getId(): ?int
     {
@@ -106,6 +112,19 @@ class Contact
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+
+    public function getDepartement(): ?Departement
+    {
+        return $this->departement;
+    }
+
+    public function setDepartement(?Departement $departement): static
+    {
+        $this->departement = $departement;
 
         return $this;
     }
