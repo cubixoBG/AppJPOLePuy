@@ -2,7 +2,13 @@ import styles from "./page.module.scss";
 import Footer from "@components/footer/Footer";
 import InscriptionForm from "@components/inscriptionForm/InscriptionForm";
 
-export default function identification() {
+type Props = {
+    searchParams: { email?: string } | Promise<{ email?: string }>;
+};
+
+export default async function identification({ searchParams }: Props) {
+    const params = await Promise.resolve(searchParams);
+    const email = params.email ?? '';
 
     return (
         <main>
@@ -12,7 +18,7 @@ export default function identification() {
                         <h2>Inscription</h2>
                         <p>Remplissez vos informations pour vous inscrire</p>
                     </div>
-                    <InscriptionForm />
+                    <InscriptionForm initialEmail={email} />
                 </div>
             </section>
             <Footer />

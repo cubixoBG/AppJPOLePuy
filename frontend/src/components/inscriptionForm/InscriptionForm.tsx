@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import ButtonFull from '@components/buttonFull/ButtonFull';
-import styles from '@/app/(main)/formulaireEmail/inscription/page.module.scss';
+import styles from './style.module.scss'
 
-export default function InscriptionForm() {
+export default function InscriptionForm({ initialEmail = '' }: { initialEmail?: string }) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [erreur, setErreur] = useState('');
@@ -57,7 +56,7 @@ export default function InscriptionForm() {
             </div>
             <div className={styles.column}>
                 <label htmlFor="email">Email <span>*</span></label>
-                <input type="email" name="email" id="email" placeholder="theo.martin@example.com" required />
+                <input type="email" name="email" id="email" placeholder="theo.martin@example.com" defaultValue={initialEmail} required />
             </div>
             <div className={styles.column}>
                 <label htmlFor="tel">Téléphone <span>*</span></label>
@@ -68,7 +67,9 @@ export default function InscriptionForm() {
                 <input type="text" name="etablissement" id="etablissement" placeholder="Lycée Polyvalent Saint Jacques de Compostelle" />
             </div>
             {erreur && <p style={{ color: 'red' }}>{erreur}</p>}
-            <ButtonFull texte={loading ? 'Envoi...' : 'Valider'} lien="" />
+            <button type="submit" disabled={loading}>
+                {loading ? 'Envoi...' : 'Valider'}
+            </button>
             <span>* Obligatoire</span>
         </form>
     );

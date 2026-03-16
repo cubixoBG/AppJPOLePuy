@@ -1,0 +1,42 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.immersion {
+    height: 30vh;
+    background-color: rgba($color: variables.$primary, $alpha: 0.10);
+    @include mixins.flexcenter;
+    color: variables.$text;
+    flex-direction: column;
+
+    &_texts {
+        width: 40%;
+
+        h2{
+            margin: 0 0 3% 0;
+        }
+    }
+
+    &_infos {
+        @include mixins.flexcenter;    
+        width: 100%;
+
+        article {
+            background-color: variables.$white;
+            padding: 0.6% 1.5%;
+            margin: 2% 1% 0 1%;
+            display: flex;
+            border-radius: 100px;
+            box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.2);
+
+            p {
+                white-space: nowrap;
+            }
+
+            img {
+                height: 25px;
+                width: auto;
+                margin: 0 8% 0 0;
+            }
+        }
+    }
+}

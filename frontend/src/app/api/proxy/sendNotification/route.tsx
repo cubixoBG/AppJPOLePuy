@@ -1,24 +1,31 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
-export async function POST(request: NextRequest) {
+export async function POST(req: any) {
     try {
-        const body = await request.json();
-
-        const response = await fetch('http://webserver:80/api/notifications/send', {
-            method: 'POST',
+        const body = await req.json();
+        console.log(body);
+        const response = await fetch("http://webserver/api/proxy/sendNotification", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': process.env.API_KEY ?? '',
+                "Content-Type": "application/json",
+                "x-api-key": process.env.API_KEY,
             },
             body: JSON.stringify(body),
         });
-
+        console.log(response);
+        if (!response.ok) {
+            return NextResponse.json(
+                { error: "Erreur backend" },
+                { status: response.status }
+            );
+        }
         const data = await response.json();
-
-        return NextResponse.json(data, { status: response.status });
+        return NextResponse.json(data);
     } catch (error) {
-        console.error('Proxy Error:', error);
-        return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+        console.error("Proxy POST Error:", error);
+        return NextResponse.json(
+            { error: "Erreur interne serveur" },
+            { status: 500 }
+        );
     }
-}
+} 

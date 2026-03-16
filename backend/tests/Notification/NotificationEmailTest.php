@@ -26,6 +26,18 @@ class NotificationEmailTest extends WebTestCase
         ], $overrides));
     }
 
+    private function logPath(): string
+    {
+        return dirname(__DIR__, 2) . '/var/log/notification_test.log';
+    }
+
+    private function clearLog(): void
+    {
+        if (file_exists($this->logPath())) {
+            file_put_contents($this->logPath(), '');
+        }
+    }
+
     public function testEnvoiNotificationRetourne201(): void
     {
         $client = static::createClient();
@@ -48,10 +60,7 @@ class NotificationEmailTest extends WebTestCase
         $email = $this->getMailerMessage();
         $to = $email->getTo();
         $this->assertNotEmpty($to);
-        $this->assertMatchesRegularExpression(
-            '/^[^@\s]+@[^@\s]+\.[^@\s]+$/',
-            $to[0]->getAddress()
-        );
+        $this->assertMatchesRegularExpression('/^[^@\s]+@[^@\s]+\.[^@\s]+$/', $to[0]->getAddress());
     }
 
     public function testEnvoiNotificationEmailContientNomVisiteur(): void
@@ -66,6 +75,59 @@ class NotificationEmailTest extends WebTestCase
         $email = $this->getMailerMessage();
         $this->assertStringContainsString('Martin', $email->getTextBody());
         $this->assertStringContainsString('Alice', $email->getTextBody());
+    }
+
+    public function testEnvoiNotificationEcritDansLog(): void
+    {
+        $this->clearLog();
+        $client = static::createClient();
+        $client->request('POST', '/api/notifications/send', [], [], $this->headers(), $this->payload([
+            'nom'    => 'LogTest',
+            'prenom' => 'Jean',
+            'mail'   => 'logtest@example.com',
+        ]));
+
+        $this->assertResponseStatusCodeSame(201);
+        $this->assertFileExists($this->logPath());
+        $contenu = file_get_contents($this->logPath());
+        $this->assertStringContainsString('Notification envoyée', $contenu);
+        $this->assertStringContainsString('LogTest', $contenu);
+    }
+
+    public function testLogContientMailDuVisiteur(): void
+    {
+        $this->clearLog();
+        $client = static::createClient();
+        $client->request('POST', '/api/notifications/send', [], [], $this->headers(), $this->payload([
+            'mail' => 'unique.test@example.com',
+        ]));
+
+        $contenu = file_get_contents($this->logPath());
+        $this->assertStringContainsString('unique.test@example.com', $contenu);
+    }
+
+    public function testLogEcritWarningPourDonneesInvalides(): void
+    {
+        $this->clearLog();
+        $client = static::createClient();
+        $client->request('POST', '/api/notifications/send', [], [], $this->headers(), $this->payload([
+            'mail' => 'pas-un-email',
+        ]));
+
+        $this->assertResponseStatusCodeSame(422);
+        $contenu = file_get_contents($this->logPath());
+        $this->assertStringContainsString('Données invalides', $contenu);
+    }
+
+    public function testLogEcritWarningPourJsonInvalide(): void
+    {
+        $this->clearLog();
+        $client = static::createClient();
+        $client->request('POST', '/api/notifications/send', [], [], $this->headers(), '{invalide}');
+
+        $this->assertResponseStatusCodeSame(400);
+        $contenu = file_get_contents($this->logPath());
+        $this->assertStringContainsString('JSON invalide', $contenu);
     }
 
     public function testMailVisiteurInvalideRetourne422(): void
