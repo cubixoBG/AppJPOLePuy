@@ -9,11 +9,11 @@
     .dashboard {
         width: 80%;
 
-        @media (max-width: $bp-xl) {
+        @media (max-width: variables.$bp-xl) {
             width: 90%;
         }
 
-        @media (max-width: $bp-md) {
+        @media (max-width: variables.$bp-md) {
             width: 95%;
         }
 
@@ -103,13 +103,13 @@
                 box-shadow: 0 4px 4px -1px rgba(0, 0, 0, 0.2);
                 align-items: center;
 
-                @media (max-width: $bp-lg) {
+                @media (max-width: variables.$bp-lg) {
                     width: calc(50% - 8px);
                     margin: 0;
                     padding: 12px 16px;
                 }
 
-                @media (max-width: $bp-sm) {
+                @media (max-width: variables.$bp-sm) {
                     width: 100%;
                 }
 
@@ -120,7 +120,7 @@
                     padding: 3% 3%;
                     border-radius: 21%;
 
-                    @media (max-width: $bp-lg) {
+                    @media (max-width: variables.$bp-lg) {
                         padding: 8px;
                         height: 36px;
                     }
