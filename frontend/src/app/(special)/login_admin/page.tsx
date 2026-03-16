@@ -6,9 +6,15 @@ import ButtonFull from "@components/buttonFull/ButtonFull";
 export default function Login_Admin() {
     const [password, setPassword] = useState("");
 
-    const handleConnexion = () => {
-        if (password === "LePuy2026") {
-            window.location.href = "/wp_admin?auth=success";
+    const handleConnexion = async () => {
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password }),
+        });
+
+        if (res.ok) {
+            window.location.href = "/wp_admin";
         } else {
             alert("Mot de passe incorrect");
         }
@@ -22,10 +28,10 @@ export default function Login_Admin() {
             </section>
             <section className={styles.admin_container_connexion}>
                 <label htmlFor="mdp">Mot de passe</label>
-                <input 
-                    type="password" 
+                <input
+                    type="password"
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Entrez le mot de passe admin" 
+                    placeholder="Entrez le mot de passe admin"
                     onKeyDown={(e) => e.key === "Enter" && handleConnexion()}
                 />
                 <div onClick={handleConnexion} style={{ cursor: 'pointer' }}>
