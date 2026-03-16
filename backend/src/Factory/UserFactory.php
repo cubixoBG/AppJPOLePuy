@@ -41,6 +41,7 @@ final class UserFactory extends PersistentProxyObjectFactory
             'mdp'          => password_hash('password', PASSWORD_BCRYPT), // ou self::faker()->password()
             'prenom'       => self::faker()->firstName(),
             'tel'          => self::faker()->phoneNumber(),
+            'id_journee'   => JourneeFactory::random(),
         ];
     }
 
