@@ -1,0 +1,62 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.main {
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .formulaire {
+        @include mixins.flexcenter;
+        width: 100%;
+        flex: 1.5;
+
+        &_container {
+            @include mixins.formContainer;
+
+            &_header {
+                margin-bottom: 9%;
+            }
+
+            form {
+                @include mixins.form;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+
+                .column {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .row {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 20px;
+                    width: 100%;
+
+                    .column {
+                        flex: 1;
+                    }
+                }
+
+                input {
+                    @include mixins.formInput;
+                }
+            }
+
+            .textInfo {
+                    margin: 3% 0 0 0;
+                    font-size: 0.9em;
+            }
+        }
+    }
+
+    footer {
+        flex: 0 0 auto;
+        align-items: center;
+        margin: 0 0 1% 0;
+    }
+}

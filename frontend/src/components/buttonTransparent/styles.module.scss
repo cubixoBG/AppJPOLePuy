@@ -1,0 +1,15 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.button {
+    height: 50px;
+    @include mixins.boutonFull(rgba($color: variables.$text, $alpha: 0.05));
+    color: variables.$text;
+    border: solid rgba($color: variables.$text, $alpha: 0.2);
+
+    &:hover {
+        border: solid rgba($color: variables.$primary, $alpha: 0.6);
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,98 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.presentateur { 
+
+    color: variables.$text;
+
+    padding-inline: 30px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &_contacts {
+
+        &_container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        &_card {
+            border: solid variables.$border 2px;
+            padding: 10px;
+            border-radius: 10px;
+            width: fit-content;
+            height: fit-content;
+            background-color: variables.$white;
+            color: variables.$text;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &_mail {
+            font-size: small;
+            color: variables.$tertiary;
+        }
+
+        &_name {
+            font-size: large;
+        }
+
+        &_domaine {
+            font-size: medium;
+        }
+    }
+
+    &_memo {
+
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+
+        &_select {
+            font-size: larger;
+            background-color: variables.$secondary;
+            color: variables.$white;
+            border-radius: 4px;
+        }
+        &_list {
+            border: solid variables.$border 2px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: variables.$white;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+    }
+    &_boutons {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.indice {
+    font-size: medium;
+    display: flex;
+    gap: 4px;
+    flex-direction: row;
+    align-items: center;    
+}
+
+.button {
+
+    align-items: center;
+    @include mixins.bouton();
+    background-color: variables.$tertiary;
+    transition: 0.3s;
+
+    &:hover {
+        color: variables.$text;
+    }
+}

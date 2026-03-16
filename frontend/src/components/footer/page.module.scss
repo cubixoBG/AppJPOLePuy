@@ -1,0 +1,10 @@
+@use "@styles/variables";
+@use "@styles/mixins";
+
+.footer {
+    max-height: 2vh;
+    color: variables.$text;
+    width: 100%;
+    text-align: center;
+    margin-top: 3%;
+}
