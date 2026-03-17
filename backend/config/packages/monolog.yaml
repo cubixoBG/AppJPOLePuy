@@ -1,8 +1,53 @@
 monolog:
-    channels: ['mail']
-    handlers:
-        mail:
-            type: stream
-            path: "%kernel.logs_dir%/mail.log"
-            level: info
-            channels: ["mail"]
+    channels:
+        - notification
+
+when@dev:
+    monolog:
+        handlers:
+            main:
+                type: stream
+                path: '%kernel.logs_dir%/%kernel.environment%.log'
+                level: debug
+                channels: ['!event']
+            notification:
+                type: stream
+                path: '%kernel.logs_dir%/notification.log'
+                level: info
+                channels: [notification]
+
+when@test:
+    monolog:
+        handlers:
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                channels: ['!event']
+            nested:
+                type: stream
+                path: '%kernel.logs_dir%/%kernel.environment%.log'
+                level: debug
+            notification:
+                type: stream
+                path: '%kernel.logs_dir%/notification_test.log'
+                level: info
+                channels: [notification]
+
+when@prod:
+    monolog:
+        handlers:
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                channels: ['!event']
+            nested:
+                type: stream
+                path: php://stderr
+                level: debug
+            notification:
+                type: stream
+                path: '%kernel.logs_dir%/notification.log'
+                level: info
+                channels: [notification]

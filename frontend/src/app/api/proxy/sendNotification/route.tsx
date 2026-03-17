@@ -4,7 +4,7 @@ export async function POST(req: any) {
     try {
         const body = await req.json();
         console.log(body);
-        const response = await fetch("http://webserver/api/notifications/send", {
+        const response = await fetch("http://webserver:80/api/notifications/send", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
