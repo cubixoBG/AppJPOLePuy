@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function Page() {
 
     const [deps, setDeps] = useState([]);
-    const [selectedDep, setSelectedDep] = useState(null);
+    const [selectedDep, setSelectedDep] = useState("");
     const [indices, setIndices] = useState([]);
     const [contacts, setContacts] = useState([]);
 
@@ -40,11 +40,6 @@ export default function Page() {
             .catch(err => console.error("Erreur fetch :", err));},
     []);
 
-    console.log(deps);
-    console.log(indices);
-    console.log(selectedDep);
-    console.log(contacts);
-
     return (
         <main className={styles.presentateur}>
             <section className={styles.presentateur_header}>
@@ -55,7 +50,6 @@ export default function Page() {
                 <div className={styles.presentateur_memo_filtre}>
                     <h3>Département</h3>
                     <select className={styles.presentateur_memo_select} onChange={(e) => {
-                        console.log(e.target.value)
                         const dep = deps.find((d: any) => e.target.value == d.id);
                         setSelectedDep(dep["@id"]);
                         }}>

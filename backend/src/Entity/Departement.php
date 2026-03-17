@@ -38,9 +38,16 @@ class Departement
     #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'departement', orphanRemoval: true)]
     private Collection $contacts;
 
+    /**
+     * @var Collection<int, Journee>
+     */
+    #[ORM\OneToMany(targetEntity: Journee::class, mappedBy: 'departement', orphanRemoval: true)]
+    private Collection $journees;
+
     public function __construct()
     {
         $this->indices = new ArrayCollection();
+        $this->journees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +157,36 @@ class Departement
             // set the owning side to null (unless already changed)
             if ($contact->getDepartement() === $this) {
                 $contact->setDepartement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Journee>
+     */
+    public function getJournees(): Collection
+    {
+        return $this->journees;
+    }
+
+    public function addJournee(Journee $journee): static
+    {
+        if (!$this->journees->contains($journee)) {
+            $this->journees->add($journee);
+            $journee->setDepartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJournee(Journee $journee): static
+    {
+        if ($this->journees->removeElement($journee)) {
+            // set the owning side to null (unless already changed)
+            if ($journee->getDepartement() === $this) {
+                $journee->setDepartement(null);
             }
         }
 
