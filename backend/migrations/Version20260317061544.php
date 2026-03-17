@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260313091612 extends AbstractMigration
+final class Version20260317061544 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,7 +27,7 @@ final class Version20260313091612 extends AbstractMigration
         $this->addSql('CREATE TABLE departement (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, logo VARCHAR(255) DEFAULT NULL, description VARCHAR(255) NOT NULL, nom_responsable VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE edt (id INT AUTO_INCREMENT NOT NULL, id_journee_id INT NOT NULL, qrcode VARCHAR(255) NOT NULL, INDEX IDX_E7A4CB5F6A8CE19F (id_journee_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE indice (id INT AUTO_INCREMENT NOT NULL, departement_id INT NOT NULL, texte VARCHAR(255) NOT NULL, INDEX IDX_38710B55CCF9E01E (departement_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE journee (id INT AUTO_INCREMENT NOT NULL, date TIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE journee (id INT AUTO_INCREMENT NOT NULL, departement_id INT NOT NULL, date TIME NOT NULL, INDEX IDX_DC179AEDCCF9E01E (departement_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE notification (id INT AUTO_INCREMENT NOT NULL, id_user_id INT NOT NULL, titre VARCHAR(255) DEFAULT NULL, message VARCHAR(255) NOT NULL, date_envoi DATE NOT NULL, INDEX IDX_BF5476CA79F37AE5 (id_user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, id_journee_id INT DEFAULT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, mail VARCHAR(255) NOT NULL, tel VARCHAR(255) NOT NULL, etablissement VARCHAR(255) NOT NULL, departement VARCHAR(255) NOT NULL, mdp VARCHAR(255) NOT NULL, heure_arrivee TIME DEFAULT NULL, type VARCHAR(255) DEFAULT NULL, statut_etu VARCHAR(255) DEFAULT NULL, INDEX IDX_8D93D6496A8CE19F (id_journee_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE contact ADD CONSTRAINT FK_4C62E638CCF9E01E FOREIGN KEY (departement_id) REFERENCES departement (id)');
@@ -35,6 +35,7 @@ final class Version20260313091612 extends AbstractMigration
         $this->addSql('ALTER TABLE cour_edt ADD CONSTRAINT FK_15CE6659F814C52E FOREIGN KEY (edt_id) REFERENCES edt (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE edt ADD CONSTRAINT FK_E7A4CB5F6A8CE19F FOREIGN KEY (id_journee_id) REFERENCES journee (id)');
         $this->addSql('ALTER TABLE indice ADD CONSTRAINT FK_38710B55CCF9E01E FOREIGN KEY (departement_id) REFERENCES departement (id)');
+        $this->addSql('ALTER TABLE journee ADD CONSTRAINT FK_DC179AEDCCF9E01E FOREIGN KEY (departement_id) REFERENCES departement (id)');
         $this->addSql('ALTER TABLE notification ADD CONSTRAINT FK_BF5476CA79F37AE5 FOREIGN KEY (id_user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D6496A8CE19F FOREIGN KEY (id_journee_id) REFERENCES journee (id)');
     }
@@ -47,6 +48,7 @@ final class Version20260313091612 extends AbstractMigration
         $this->addSql('ALTER TABLE cour_edt DROP FOREIGN KEY FK_15CE6659F814C52E');
         $this->addSql('ALTER TABLE edt DROP FOREIGN KEY FK_E7A4CB5F6A8CE19F');
         $this->addSql('ALTER TABLE indice DROP FOREIGN KEY FK_38710B55CCF9E01E');
+        $this->addSql('ALTER TABLE journee DROP FOREIGN KEY FK_DC179AEDCCF9E01E');
         $this->addSql('ALTER TABLE notification DROP FOREIGN KEY FK_BF5476CA79F37AE5');
         $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D6496A8CE19F');
         $this->addSql('DROP TABLE avis');

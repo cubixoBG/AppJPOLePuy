@@ -36,3 +36,36 @@ export async function GET() {
         );
     }
 }
+
+export async function PATCH(req: Request) {
+    try {
+        const body = await req.json();
+        console.log(body);
+        const response = await fetch(`http://webserver:80${body.id_user}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/merge-patch+json',
+                'x-api-key': process.env.API_KEY,
+            },
+            body: JSON.stringify({ "id_journee": body.id_journee }),
+            cache: 'no-store',
+        });
+
+        if (!response.ok) {
+            return NextResponse.json(
+                { error: 'Erreur backend' },
+                { status: response.status }
+            );
+        }
+
+        const data = await response.json();
+        return NextResponse.json(data);
+
+    } catch (error) {
+        console.error('Proxy Error:', error);
+        return NextResponse.json(
+        { error: 'Erreur interne du serveur' },
+        { status: 500 }
+      );
+    }
+  }
