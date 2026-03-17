@@ -22,11 +22,11 @@ class AppFixtures extends Fixture
         // $manager->persist($product);
 
         DefaultDepartementStory::load();
+        DefaultJourneeStory::load();
         DefaultContactStory::load();
         DefaultUserStory::load();
         DefaultCourStory::load();
         DefaultEdtStory::load();
-        DefaultJourneeStory::load();
         DefaultAvisStory::load();
         DefaultNotificationStory::load();
         DefaultIndiceStory::load();

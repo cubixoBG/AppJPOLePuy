@@ -6,6 +6,8 @@ import styles from "./styles.module.scss";
 export default function ConnexionManager() {
     const [isIdentified, setIsIdentified] = useState(false);
 
+    const placeholderUser = ""
+
     if (isIdentified) {
         return (
             <section className={styles.choixDateImmersion}>

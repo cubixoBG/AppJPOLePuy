@@ -33,6 +33,10 @@ class Journee
     #[ORM\OneToMany(targetEntity: Edt::class, mappedBy: 'id_journee', orphanRemoval: true)]
     private Collection $id_edt;
 
+    #[ORM\ManyToOne(inversedBy: 'journees')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Departement $departement = null;
+
     public function __construct()
     {
         $this->id_user = new ArrayCollection();
@@ -112,6 +116,18 @@ class Journee
                 $idEdt->setIdJournee(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDepartement(): ?Departement
+    {
+        return $this->departement;
+    }
+
+    public function setDepartement(?Departement $departement): static
+    {
+        $this->departement = $departement;
 
         return $this;
     }

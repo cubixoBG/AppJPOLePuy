@@ -34,8 +34,6 @@ final class AvisFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'date' => self::faker()->dateTime(),
-            'visiteur' => UserFactory::new(),
             'note' => self::faker()->numberBetween(1, 5),
             'commentaire' => self::faker()->optional()->sentence(12),    
         ];
