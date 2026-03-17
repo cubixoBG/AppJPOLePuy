@@ -3,9 +3,9 @@ import ButtonFull from "@components/buttonFull/ButtonFull";
 import ButtonTransparent from "@components/buttonTransparent/ButtonTransparent";
 import SectionImmersion from "@components/immersionSection/ImmersionSection";
 import Footer from "@components/footer/Footer"
+import DepartementCards from "@components/departementCards/DepartementCards";
 
-export default function Home() {
-
+export default async function Home() {
   return (
     <main className={styles.accueil}>
       <section className={styles.accueil_Top}>
@@ -24,26 +24,7 @@ export default function Home() {
           <div className={styles.choixDep_Container}>
             <h2>Choisissez un département</h2>
             <p>Sélectionnez le département qui vous intéresse le plus pour commencer votre inscription.</p>
-            <div>
-              <a href="#"><article>
-                <img src="/paletteCouleur.webp" alt="icon MMI" />
-                <h3>MMI</h3>
-                <p>Métiers du Multimédia
-                  et de l'Internet</p>
-              </article></a>
-              <a href="#"><article>
-                <img src="/ordinateur.webp" alt="icon Info" />
-                <h3>Informatique</h3>
-                <p>Développement,
-                  réseaux et systèmes</p>
-              </article></a>
-              <a href="#"><article>
-                <img src="chimie.webp" alt="icon Chimie" />
-                <h3>Chimie</h3>
-                <p>Chimie analytique et de
-                  synthèse</p>
-              </article></a>
-            </div>
+            <DepartementCards/>
           </div>
         </section>
 
