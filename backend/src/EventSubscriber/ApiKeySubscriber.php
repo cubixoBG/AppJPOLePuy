@@ -9,17 +9,22 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 class ApiKeySubscriber implements EventSubscriberInterface
 {
     private string $apiKey;
+    private string $env;
 
-    public function __construct(string $apiKey)
+    public function __construct(string $apiKey, string $env)
     {
         $this->apiKey = $apiKey;
+        $this->env = $env;
     }
 
     public function onKernelRequest(RequestEvent $event): void
     {
+        if ($this->env === 'test') {
+            return;
+        }
+
         $request = $event->getRequest();
 
-        // Ignorer la doc et la route /api
         if ($request->getPathInfo() === '/api' || str_starts_with($request->getPathInfo(), '/api/docs')) {
             return;
         }

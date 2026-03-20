@@ -4,6 +4,7 @@
          backupGlobals="false"
          colors="true"
          defaultTestSuite="all"
+         bootstrap="tests/bootstrap.php"
 >
     <php>
         <ini name="display_errors" value="1" />
@@ -24,6 +25,9 @@
         </testsuite>
         <testsuite name="security">
             <directory>tests/Security</directory>
+        </testsuite>
+        <testsuite name="notification">
+            <directory>tests/Notification</directory>
         </testsuite>
     </testsuites>
 
