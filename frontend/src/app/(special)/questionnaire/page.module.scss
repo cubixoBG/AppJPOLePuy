@@ -1,2 +1,11 @@
 @use "@styles/variables";
 @use "@styles/mixins";
+
+.questionnaire {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}

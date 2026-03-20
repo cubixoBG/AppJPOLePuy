@@ -22,6 +22,11 @@ services:
     App\EventSubscriber\ApiKeySubscriber:
         arguments:
             $apiKey: '%env(API_KEY)%'
+            $env: '%kernel.environment%'
+
+    App\Service\AmbassadeurMailer:
+        arguments:
+            $ambassadeurEmail: '%env(AMBASSADOR_EMAIL)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

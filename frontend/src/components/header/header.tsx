@@ -6,14 +6,14 @@ export default function Header({type = 1}) {
     if (type === 1) {
         navContent = (
             <ul>
-                <li><a href="#">Présentateur</a></li>
-                <li><a href="#">Admin</a></li>
+                <li><a href="./presentateurs">Présentateur</a></li>
+                <li><a href="./wp_admin">Admin</a></li>
             </ul>
         );
     } else {
         navContent = (
             <ul>
-                <li><a href="./app/page.tsx">Retour au site</a></li>
+                <li><a href="./">Retour au site</a></li>
             </ul>
         );
     }

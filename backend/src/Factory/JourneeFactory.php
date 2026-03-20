@@ -34,7 +34,9 @@ final class JourneeFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'date' => self::faker()->dateTime(),        ];
+            'date' => self::faker()->dateTime(),
+            'departement' => DepartementFactory::random(),
+            ];
     }
 
     /**
