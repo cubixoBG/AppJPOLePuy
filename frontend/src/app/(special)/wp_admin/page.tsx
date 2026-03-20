@@ -4,6 +4,7 @@ import ButtonFull from "@components/buttonFull/ButtonFull";
 import GraphiqueBarre from "@components/graphiqueBarre/BarChart"
 import GraphiqueCercle from "@components/graphiqueCercle/CercleChart"
 import VisiteursTable from "@components/visiteursTable/VisiteursTable"
+// import proxy from "@src/proxy";
 
 export default async function AdminPage({ searchParams }: { searchParams: { auth?: string } }) {
     const authStatus = searchParams?.auth;

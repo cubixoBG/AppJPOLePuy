@@ -1,4 +1,7 @@
 api_platform:
+    formats:
+        jsonld: ['application/ld+json']
+        json:    ['application/json'] # Assurez-vous que cette ligne existe
     title: Hello API Platform
     version: 1.0.0
     defaults:
